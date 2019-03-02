@@ -39,6 +39,7 @@ public class SpriteDemo extends JPanel {
 	private Image Apple;
 	private Image ApplePourri;
 	private Image Chasseur;
+	private Image terre;
 	public static int dx;
 	public static int dy;
 	private int spriteLength = 32;
@@ -49,7 +50,7 @@ public class SpriteDemo extends JPanel {
 		{
 			waterSprite = ImageIO.read(new File("water.png"));
 			treeSprite = ImageIO.read(new File("arbref.png"));
-			grassSprite = ImageIO.read(new File("terre.png"));
+			grassSprite = ImageIO.read(new File("grass.png"));
 			tSprite = ImageIO.read(new File("tree.png"));
 			PokemonFeu = ImageIO.read(new File("hericendre.png"));
 			PokemonFeuEvolue = ImageIO.read(new File("FeurissonTrans.png")); 
@@ -58,6 +59,7 @@ public class SpriteDemo extends JPanel {
 			Apple = ImageIO.read(new File("pomme.png"));
 			ApplePourri = ImageIO.read(new File("pommeP.png"));
 			Chasseur = ImageIO.read(new File("chasseur.png"));
+			terre = ImageIO.read(new File("terre.png"));
 		}
 		catch(Exception e)
 		{
@@ -78,6 +80,9 @@ public class SpriteDemo extends JPanel {
 			for ( int j = 0 ; j < dy ; j++ )
 			{
 				try {
+					if (Terrain.getTerrain()[i][j]<-5)
+						g2.drawImage(terre,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+					if (Terrain.getTerrain()[i][j]>=-5)
 					g2.drawImage(grassSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
 					if ( Monde.testC(i, j).size() == 0 ) {
 						continue;
@@ -115,9 +120,9 @@ public class SpriteDemo extends JPanel {
 	
 	}
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=30,dy=30,20);
+		Monde monde = new Monde(dx=20,dy=20,20);
 		SpriteDemo a =new SpriteDemo();
-
+		Terrain terrain= new Terrain(dx,dy);
 		int step=0;
 		while(true) {
 			a.repaint();
@@ -129,9 +134,9 @@ public class SpriteDemo extends JPanel {
 			monde.addB();
 			monde.reproduction();
 			M.finB();
-			Terrain.Stockage_passage();
+			terrain.Stockage_passage();
 			try{
-				Thread.sleep(100); // en ms
+				Thread.sleep(150); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}
