@@ -43,12 +43,9 @@ public class Monde {
 			}
 		}
 		int x1,y1;
-		do {
-			x1= (int) (Math.random()*dx);
-			y1 =(int) (Math.random()*dy);
-		}while(testC(x1,y1).size() != 0);
-		carte.add(new Braconnier(2, 2));
-		//carte.add(new M1(3, 2));
+		carte.add(new Braconnier(12, 12));
+		//carte.add(new M1(13, 12));
+		//carte.add(new M2(13, 12));
 	}
 	
 	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte
@@ -89,10 +86,12 @@ public class Monde {
 	
 	public void Refresh() {
 		for (int i=0;i<carte.size();i++) {
-			if (carte.get(i) instanceof M)
-				((M) carte.get(i)).move(dx, dy);
 			if (carte.get(i) instanceof Braconnier)
 				((Braconnier) carte.get(i)).move(dx, dy);
+			}
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof M)
+				((M) carte.get(i)).move(dx, dy);
 			if (carte.get(i) instanceof Pomme) {
 				((Pomme) carte.get(i)).pourrir();
 			}
@@ -126,6 +125,19 @@ public class Monde {
 			System.out.println("");
 		}
 		System.out.println("");
+	}
+	
+	public static boolean ch_m() {
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof Braconnier) {
+				for (int j=0;j<carte.size();j++) {
+					if ((carte.get(j) instanceof M) && ((Braconnier)(carte.get(i))).getX() == ((M) carte.get(j)).getX() && ((Braconnier)(carte.get(i))).getY() == ((M) carte.get(j)).getY()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 }
