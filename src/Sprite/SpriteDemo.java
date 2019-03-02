@@ -21,6 +21,7 @@ import Mobs.M1;
 import Mobs.M2;
 import Mobs.Pomme;
 import Monde.Monde;
+import Monde.Terrain;
 
 public class SpriteDemo extends JPanel {
 
@@ -48,7 +49,7 @@ public class SpriteDemo extends JPanel {
 		{
 			waterSprite = ImageIO.read(new File("water.png"));
 			treeSprite = ImageIO.read(new File("arbref.png"));
-			grassSprite = ImageIO.read(new File("grass.png"));
+			grassSprite = ImageIO.read(new File("terre.png"));
 			tSprite = ImageIO.read(new File("tree.png"));
 			PokemonFeu = ImageIO.read(new File("hericendre.png"));
 			PokemonFeuEvolue = ImageIO.read(new File("FeurissonTrans.png")); 
@@ -128,6 +129,7 @@ public class SpriteDemo extends JPanel {
 			monde.addB();
 			monde.reproduction();
 			M.finB();
+			Terrain.Stockage_passage();
 			try{
 				Thread.sleep(100); // en ms
 			}catch(Exception e){
