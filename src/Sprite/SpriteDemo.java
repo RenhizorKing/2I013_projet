@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import Mobs.Arbre;
 import Mobs.Braconnier;
+import Mobs.M;
 import Mobs.M1;
 import Mobs.M2;
 import Mobs.Pomme;
@@ -75,12 +76,12 @@ public class SpriteDemo extends JPanel {
 		for ( int i = 0 ; i < dx ; i++ )
 			for ( int j = 0 ; j < dy ; j++ )
 			{
+				try {
 					g2.drawImage(grassSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
 					if ( Monde.testC(i, j).size() == 0 ) {
 						continue;
 					}else {
 						for (int l=0;l<Monde.testC(i, j).size();l++) {
-							try {
 								if (Monde.testC(i, j).get(l) instanceof M1) {
 									if (((M1) Monde.testC(i, j).get(l)).getNb_evolution() == 0)
 										g2.drawImage(PokemonFeu,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
@@ -105,28 +106,30 @@ public class SpriteDemo extends JPanel {
 								if (Monde.testC(i, j).get(l) instanceof Braconnier)
 									g2.drawImage(Chasseur,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
 							
-							}catch(Exception E) {
 							}
-						}
-
-					}
+				}
+				}catch(Exception E) {
+				}
 		}
 	
 	}
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=20,dy=20,20);
+		Monde monde = new Monde(dx=30,dy=30,20);
 		SpriteDemo a =new SpriteDemo();
 
 		int step=0;
 		while(true) {
 			a.repaint();
 			monde.Refresh();
-			//monde.pomme_pop(step);
-			//Pomme.duree();
-			//Pomme.delete();
-			//Braconnier.chasser();
+			monde.pomme_pop(step);
+			Pomme.duree();
+			Pomme.delete();
+			Braconnier.chasser();
+			monde.addB();
+			monde.reproduction();
+			M.finB();
 			try{
-				Thread.sleep(400); // en ms
+				Thread.sleep(100); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}

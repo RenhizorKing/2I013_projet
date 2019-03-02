@@ -42,10 +42,8 @@ public class Monde {
 				}
 			}
 		}
-		int x1,y1;
+		
 		carte.add(new Braconnier(12, 12));
-		//carte.add(new M1(13, 12));
-		//carte.add(new M2(13, 12));
 	}
 	
 	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte
@@ -117,7 +115,6 @@ public class Monde {
 						System.out.print(((M) carte.get(i)).getS()+" ");
 					if (carte.get(i) instanceof Arbre)
 						System.out.print(((Arbre) carte.get(i)).getS()+" ");
-					
 				}else {
 					System.out.print("- ");
 				}
@@ -126,18 +123,27 @@ public class Monde {
 		}
 		System.out.println("");
 	}
-	
-	public static boolean ch_m() {
+	public void addB() {
+		if (Math.random() <0.005)
+			carte.add(new Braconnier((int) (Math.random()*dx),(int) (Math.random()*dx)));
+	}
+	public void reproduction() {
 		for (int i=0;i<carte.size();i++) {
-			if (carte.get(i) instanceof Braconnier) {
-				for (int j=0;j<carte.size();j++) {
-					if ((carte.get(j) instanceof M) && ((Braconnier)(carte.get(i))).getX() == ((M) carte.get(j)).getX() && ((Braconnier)(carte.get(i))).getY() == ((M) carte.get(j)).getY()) {
-						return true;
+			if (carte.get(i) instanceof M && testC(((M)carte.get(i)).getX(),((M) carte.get(i)).getY()).size() != 0) {
+				ArrayList<Object> a_XY = testC(((M)carte.get(i)).getX(),((M) carte.get(i)).getY());
+				for (int m=0;m<a_XY.size();m++) {
+					if (a_XY.get(m).getClass() == carte.get(i).getClass() && ((M) a_XY.get(m)).getNb_evolution() == ((M) carte.get(i)).getNb_evolution()) {
+						if (carte.get(i) instanceof M1 && Math.random() <0.001) {
+							carte.add(new M1(((M) carte.get(i)).getX(),((M) carte.get(i)).getY()));
+							return ;
+						}
+						if (carte.get(i) instanceof M2 && Math.random() <0.001) {
+							carte.add(new M2(((M) carte.get(i)).getX(),((M) carte.get(i)).getY()));
+							return ;
+						}
 					}
 				}
 			}
 		}
-		return false;
 	}
-	
 }

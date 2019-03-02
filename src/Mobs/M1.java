@@ -29,10 +29,10 @@ public class M1 extends M{
 			}
 		}
 		int x1,x2;
-		//do {
+		do {
 			x1= (int) (Math.random()*3) -1;
 			x2= (int) (Math.random()*3) -1;
-		//}while(Monde.testC(((x+x1+dx)%dx),((y+x2+dy)%dy)).size() ==0);
+		}while(Monde.yaArbres((x+x1+dx)%dx, (y+x2+dy)%dy));
 		this.x=(x+x1+dx)%dx;
 		this.y=(y+x2+dy)%dy;
 	}

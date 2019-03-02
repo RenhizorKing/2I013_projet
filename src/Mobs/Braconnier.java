@@ -21,9 +21,11 @@ public class Braconnier {
 			for(int j = (this.getY() - 1+ dy )%dy; j <= (this.getY() + 1 + dy)%dy; j++) {
 				for(int m=0; m < Monde.getCarte().size();m++) {
 					if(Monde.getCarte().get(m) instanceof M && ((M) Monde.getCarte().get(m)).getX() == i && ((M) Monde.getCarte().get(m)).getY() == j) {
-						this.x = ((M) Monde.getCarte().get(m)).getX();
-						this.y = ((M) Monde.getCarte().get(m)).getY();
-						return;
+						if (Math.random() < 0.85) {
+							this.x = ((M) Monde.getCarte().get(m)).getX();
+							this.y = ((M) Monde.getCarte().get(m)).getY();
+							return;							
+						}
 					}
 				}
 			}
@@ -43,15 +45,13 @@ public class Braconnier {
 					for(int j = ((Braconnier)Monde.getCarte().get(c)).getY() - 1; j <= ((Braconnier)Monde.getCarte().get(c)).getY() + 1; j++) {
 						for(int m=0; m < Monde.getCarte().size();m++) {
 							if (Monde.getCarte().get(m) instanceof M1 && ((M1) Monde.getCarte().get(m)).getX() == i && ((M1) Monde.getCarte().get(m)).getY() == j) {// si M1 voisin
-								if (Math.random() <0.6)
+								if (Math.random() <0.3)
 									Monde.getCarte().remove(Monde.getCarte().get(m));
-									//System.out.println("OK"+Monde.getCarte().size());
 									return ;
 							}
 							if (Monde.getCarte().get(m) instanceof M2 && ((M2) Monde.getCarte().get(m)).getX() == i && ((M2) Monde.getCarte().get(m)).getY() == j) {// si M2 voisin
-								if (Math.random() <0.6)
+								if (Math.random() <0.4)
 									Monde.getCarte().remove(Monde.getCarte().get(m));
-									//System.out.println("OK"+Monde.getCarte().size());
 									return ;
 							}
 						}

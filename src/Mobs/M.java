@@ -2,6 +2,8 @@ package Mobs;
 
 import java.util.ArrayList;
 
+import Monde.Monde;
+
 public abstract class M {
 	private static int id=0;
 	protected int x;
@@ -39,6 +41,30 @@ public abstract class M {
 						nb_pomme_manger += 2 ;
 					monde.remove(i);
 					return ;
+			}
+		}
+	}
+	
+	public static void finB() {
+		for (int c=0;c<Monde.getCarte().size();c++) {
+
+			if (Monde.getCarte().get(c) instanceof M) {
+				for(int i = ((M)Monde.getCarte().get(c)).getX() - 1; i <= ((M)Monde.getCarte().get(c)).getX() + 1; i++) {
+					for(int j = ((M)Monde.getCarte().get(c)).getY() - 1; j <= ((M)Monde.getCarte().get(c)).getY() + 1; j++) {
+						for(int m=0; m < Monde.getCarte().size();m++) {
+							if (Monde.getCarte().get(m) instanceof Braconnier && ((Braconnier) Monde.getCarte().get(m)).getX() == i && ((Braconnier) Monde.getCarte().get(m)).getY() == j) {
+								if (((M) Monde.getCarte().get(c)).getNb_evolution() == 0 && Math.random() < 0.1) {
+									Monde.getCarte().remove(Monde.getCarte().get(m));
+									return ;
+								}
+								if (((M) Monde.getCarte().get(c)).getNb_evolution() == 1 && Math.random() < 0.2) {
+									Monde.getCarte().remove(Monde.getCarte().get(m));
+									return ;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
