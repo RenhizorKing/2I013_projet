@@ -19,7 +19,7 @@ public class Monde {
 	}
 	public Monde(int x, int y, int nb_A) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
-		dy=y;
+		dy=y;/*
 		for (int i=0;i<nb_A;i++) {
 			double p = Math.random();
 			if (p <= 0.4) {
@@ -43,7 +43,8 @@ public class Monde {
 			}
 		}
 		
-		carte.add(new Braconnier(12, 12));
+		carte.add(new Braconnier(12, 12));*/
+		carte.add(new M1(10,10));
 	}
 	
 	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte

@@ -23,7 +23,7 @@ import Mobs.Pomme;
 import Monde.Monde;
 import Monde.Terrain;
 
-public class SpriteDemo extends JPanel {
+public class Sprite_move extends JPanel {
 
 
 	private JFrame frame;
@@ -42,12 +42,16 @@ public class SpriteDemo extends JPanel {
 	private Image terre;
 	public static int dx;
 	public static int dy;
-	private int spriteLength = 32;
-
-	public SpriteDemo()
+	private int spriteLength = 40;
+	public int pas;
+	Graphics2D g2;
+	
+	public Sprite_move()
 	{
+		pas=0;
 		try
 		{
+			
 			waterSprite = ImageIO.read(new File("water.png"));
 			treeSprite = ImageIO.read(new File("arbref.png"));
 			grassSprite = ImageIO.read(new File("grass.png"));
@@ -72,69 +76,61 @@ public class SpriteDemo extends JPanel {
 		frame.setSize(965,1000);
 		frame.setVisible(true);
 	}
-
+	public void terrain() {
+		
+		for ( int i = 0 ; i < dx ; i++ ) {
+			for ( int j = 0 ; j < dy ; j++ ) {
+				if (Terrain.getTerrain()[i][j]<-5)
+					g2.drawImage(terre,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+				if (Terrain.getTerrain()[i][j]>=-5)
+					g2.drawImage(grassSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+				
+			}
+		}
+	}
 	public void paint(Graphics g)
 	{
-		Graphics2D g2 = (Graphics2D)g;
+		g2= (Graphics2D)g;
+		this.terrain();
 		for ( int i = 0 ; i < dx ; i++ )
 			for ( int j = 0 ; j < dy ; j++ )
 			{
 				try {
-					if (Terrain.getTerrain()[i][j]<-5)
-						g2.drawImage(terre,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-					if (Terrain.getTerrain()[i][j]>=-5)
-						g2.drawImage(grassSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
 					if ( Monde.testC(i, j).size() == 0 ) {
 						continue;
 					}else {
 						for (int l=0;l<Monde.testC(i, j).size();l++) {
 								if (Monde.testC(i, j).get(l) instanceof M1) {
 									if (((M1) Monde.testC(i, j).get(l)).getNb_evolution() == 0)
-										g2.drawImage(PokemonFeu,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
+										g2.drawImage(PokemonFeu,spriteLength*i+pas,spriteLength*j,spriteLength,spriteLength, frame);
 									if (((M1) Monde.testC(i, j).get(l)).getNb_evolution() == 1)
 										g2.drawImage(PokemonFeuEvolue,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
 								}
-								if (Monde.testC(i, j).get(l) instanceof M2) {
-									if (((M2) Monde.testC(i, j).get(l)).getNb_evolution() == 0)
-										g2.drawImage(PokemonEau,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-									if (((M2) Monde.testC(i, j).get(l)).getNb_evolution() == 1)
-										g2.drawImage(PokemonEauEvolue,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-								}
-								if (Monde.testC(i, j).get(l) instanceof Arbre) {
-									g2.drawImage(tSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-								}
-								if (Monde.testC(i, j).get(l) instanceof Pomme) {
-									if ((((Pomme) Monde.testC(i, j).get(l)).isEstPourrie() == false))
-										g2.drawImage(Apple,spriteLength*i,spriteLength*j,spriteLength-10,spriteLength-10, frame);
-									if ((((Pomme) Monde.testC(i, j).get(l)).isEstPourrie() == true))
-										g2.drawImage(ApplePourri,spriteLength*i,spriteLength*j,spriteLength-10,spriteLength-10, frame);
-								}
-								if (Monde.testC(i, j).get(l) instanceof Braconnier)
-									g2.drawImage(Chasseur,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-							
-							}
-				}
+						}
+					}
 				}catch(Exception E) {
 				}
 		}
 	
 	}
+	
 	public static void main(String[] args) {
 		Monde monde = new Monde(dx=20,dy=20,20);
-		SpriteDemo a =new SpriteDemo();
+		Sprite_move a =new Sprite_move();
 		Terrain terrain= new Terrain(dx,dy);
 		int step=0;
 		while(true) {
 			a.repaint();
-			monde.Refresh();
-			monde.pomme_pop(step);
-			Pomme.duree();
-			Pomme.delete();
-			Braconnier.chasser();
-			monde.addB();
-			monde.reproduction();
-			M.finB();
-			terrain.Stockage_passage();
+			a.pas+=4;
+			//monde.Refresh();
+			//monde.pomme_pop(step);
+			//Pomme.duree();
+			//Pomme.delete();
+			//Braconnier.chasser();
+			//monde.addB();
+			//monde.reproduction();
+			//M.finB();
+			//terrain.Stockage_passage();
 			try{
 				Thread.sleep(150); // en ms
 			}catch(Exception e){
