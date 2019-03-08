@@ -11,7 +11,7 @@ public abstract class M {
 	protected int sens;
 	protected String S;
 	protected int nb_pomme_manger;
-	protected int nb_evolution;
+	protected boolean evolution;
 
 
 	protected int step;
@@ -24,7 +24,7 @@ public abstract class M {
 		id++;
 		step =0;
 		nb_pomme_manger = 0;
-		nb_evolution = 0;
+		evolution = false;
 		
 	}
 	public void move(int dx, int dy) {
@@ -86,8 +86,8 @@ public abstract class M {
 	public int getNb_pomme_manger() {
 		return nb_pomme_manger;
 	}
-	public int getNb_evolution() {
-		return nb_evolution;
+	public boolean getEvolution() {
+		return evolution;
 	}
 	public int getSens() {
 		return this.sens;

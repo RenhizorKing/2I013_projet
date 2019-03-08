@@ -39,8 +39,8 @@ public class M2 extends M{
 		}
 	
 	public void evoluer() {
-		if(nb_pomme_manger >= 30 && nb_evolution == 0) {
-			nb_evolution ++;
+		if(nb_pomme_manger >= 30 && evolution == false) {
+			evolution = true;
 		}
 	}
 	public void setSens() {

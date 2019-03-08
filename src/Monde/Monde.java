@@ -46,8 +46,12 @@ public class Monde {
 				}
 			}
 		}*/
-		carte.add(new M1(10,10));
-		//carte.add(new Arbre(5,5));
+		
+		carte.add(new M1(11,10));
+		carte.add(new Arbre(9,10));
+		carte.add(new Arbre(11,10));
+		carte.add(new Arbre(10,9));
+		carte.add(new Arbre(10,11));
 	}
 	
 	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte
