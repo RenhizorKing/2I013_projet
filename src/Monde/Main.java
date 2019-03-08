@@ -7,7 +7,7 @@ public class Main {
 		//System.exit(0);
 		int step=0;
 		while(true) {
-			monde.Afficher();
+			//monde.Afficher();
 			monde.Refresh();
 			monde.pomme_pop(step);
 			try{

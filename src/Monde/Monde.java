@@ -10,13 +10,17 @@ import Mobs.M2;
 import Mobs.Pomme;
 
 public class Monde {
-	private int dx;
-	private int dy;
+	private static int dx;
+	private static int dy;
 	private static ArrayList<Object> carte = new ArrayList<>();
+	private static int direction;
+	private int cpt = 0;
+	
 	
 	public static ArrayList<Object> getCarte() {
 		return carte;
 	}
+
 	public Monde(int x, int y, int nb_A) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
 		dy=y;/*
@@ -41,10 +45,9 @@ public class Monde {
 					carte.add(monstre);
 				}
 			}
-		}
-		
-		carte.add(new Braconnier(12, 12));*/
+		}*/
 		carte.add(new M1(10,10));
+		//carte.add(new Arbre(5,5));
 	}
 	
 	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte
@@ -59,12 +62,28 @@ public class Monde {
 			carte.add(apple);
 		}
 	}
+	
 	public void detail() {
-		System.out.println("Taille :"+carte.size());
-		for (int i=0;i<carte.size();i++) {
-			System.out.println(carte.get(i).getClass() == Mobs.Arbre.class);//pour debuger lors des erreurs
-		}
+		System.out.println("Taille :"+carte.size());//pour debuger lors des erreurs
 	}
+	
+	public static ArrayList<Object> testC(int x,int y,Class<?> O) {//retourne une ArrayList composé de class de O ayant comme coordonéées [x,y]
+		ArrayList<Object> agent_XY = new ArrayList<>();
+		//System.out.println(""+carte.size());
+		for (int i=0;i<carte.size();i++) {
+			//System.out.println(""+carte.get(i).getClass()+" " + "class Mobs.Arbre"+ " "+ carte.get(i).getClass().equals(O));
+			if (carte.get(i).getClass().equals(O) && carte.get(i) instanceof M && ((M) carte.get(i)).getX() == x && ((M) carte.get(i)).getY() == y) //verification de la position et de la classe
+				agent_XY.add((M) carte.get(i));
+			if (carte.get(i).getClass().equals(O) && carte.get(i) instanceof Pomme && ((Pomme) carte.get(i)).getX() == x && ((Pomme) carte.get(i)).getY() == y)
+				agent_XY.add((Pomme) carte.get(i));
+			if (carte.get(i).getClass().equals(O) && carte.get(i) instanceof Braconnier && ((Braconnier) carte.get(i)).getX() == x && ((Braconnier) carte.get(i)).getY() == y)
+				agent_XY.add((Braconnier) carte.get(i));
+			if (carte.get(i).getClass().equals(O) && carte.get(i) instanceof Arbre && ((Arbre) carte.get(i)).getX() == x && ((Arbre) carte.get(i)).getY() == y)
+				agent_XY.add((Arbre) carte.get(i));
+		}
+		return agent_XY;//S'il n'y a pas d'agent sur la case présent
+	}
+	
 	public static ArrayList<Object> testC(int x,int y) {//retourne la classe de l'agent présent sur la case [x,y]
 		ArrayList<Object> agent_XY = new ArrayList<>();
 		//System.out.println(""+carte.size());
@@ -79,43 +98,43 @@ public class Monde {
 				agent_XY.add((Pomme) carte.get(i));
 			if (carte.get(i) instanceof Braconnier && ((Braconnier) carte.get(i)).getX() == x && ((Braconnier) carte.get(i)).getY() == y)
 				agent_XY.add((Braconnier) carte.get(i));
+			if (carte.get(i) instanceof Arbre && ((Arbre) carte.get(i)).getX() == x && ((Arbre) carte.get(i)).getY() == y)
+				agent_XY.add((Arbre) carte.get(i));
+			
 		}
 		return agent_XY;//S'il n'y a pas d'agent sur la case présent
 	}
 	
 	public void Refresh() {
 		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof M) {
+			
+				((M) carte.get(i)).move(dx, dy);
+				
+			}
 			if (carte.get(i) instanceof Braconnier)
 				((Braconnier) carte.get(i)).move(dx, dy);
-			}
-		for (int i=0;i<carte.size();i++) {
-			if (carte.get(i) instanceof M)
-				((M) carte.get(i)).move(dx, dy);
 			if (carte.get(i) instanceof Pomme) {
 				((Pomme) carte.get(i)).pourrir();
 			}
 		}
 	}
-	public static boolean yaArbres(int x, int y) {
-		if (carte.size()==0)
-			return false;
-		for (int i=0;i<carte.size();i++) {
-			if (carte.get(i) instanceof Arbre && ((Arbre)carte.get(i)).getX()==x && ((Arbre)carte.get(i)).getY()==y)
-				return true;
-		}
-		return false;
+	public static int getDirection() {
+		return direction;
 	}
+	/*
 	public void Afficher() {
 		for (int j=0;j<dx;j++) {
 			for (int i=0;i<dy;i++) {
 				
-				if (testC(i, j).size() != 0) {
-					if (carte.get(i) instanceof M1)
+				if (testC(i, j) != null) {
+					if (carte.get(i).getClass() == Mobs.M1.class)
 						System.out.print(((M) carte.get(i)).getS()+" ");
-					if (carte.get(i) instanceof M2)
+					if (carte.get(i).getClass() == Mobs.M2.class)
 						System.out.print(((M) carte.get(i)).getS()+" ");
-					if (carte.get(i) instanceof Arbre)
+					if (carte.get(i).getClass() == Mobs.Arbre.class)
 						System.out.print(((Arbre) carte.get(i)).getS()+" ");
+					
 				}else {
 					System.out.print("- ");
 				}
@@ -123,28 +142,14 @@ public class Monde {
 			System.out.println("");
 		}
 		System.out.println("");
+	}*/
+
+	public static int getDx() {
+		return dx;
 	}
-	public void addB() {
-		if (Math.random() <0.005)
-			carte.add(new Braconnier((int) (Math.random()*dx),(int) (Math.random()*dx)));
+
+	public static int getDy() {
+		return dy;
 	}
-	public void reproduction() {
-		for (int i=0;i<carte.size();i++) {
-			if (carte.get(i) instanceof M && testC(((M)carte.get(i)).getX(),((M) carte.get(i)).getY()).size() != 0) {
-				ArrayList<Object> a_XY = testC(((M)carte.get(i)).getX(),((M) carte.get(i)).getY());
-				for (int m=0;m<a_XY.size();m++) {
-					if (a_XY.get(m).getClass() == carte.get(i).getClass() && ((M) a_XY.get(m)).getNb_evolution() == ((M) carte.get(i)).getNb_evolution()) {
-						if (carte.get(i) instanceof M1 && Math.random() <0.001) {
-							carte.add(new M1(((M) carte.get(i)).getX(),((M) carte.get(i)).getY()));
-							return ;
-						}
-						if (carte.get(i) instanceof M2 && Math.random() <0.001) {
-							carte.add(new M2(((M) carte.get(i)).getX(),((M) carte.get(i)).getY()));
-							return ;
-						}
-					}
-				}
-			}
-		}
-	}
+	
 }

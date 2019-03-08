@@ -8,6 +8,7 @@ public abstract class M {
 	private static int id=0;
 	protected int x;
 	protected int y;
+	protected int sens;
 	protected String S;
 	protected int nb_pomme_manger;
 	protected int nb_evolution;
@@ -27,12 +28,28 @@ public abstract class M {
 		
 	}
 	public void move(int dx, int dy) {
-		int x1= (int) (Math.random()*3) -1;
-		int x2= (int) (Math.random()*3) -1;
-		x=(x+x1+dx)%dx;
-		y=(y+x2+dy)%dy;
+		if(this.sens == 0) {
+			this.x=(this.x-1+dx)%dx;
+		}
+		if(this.sens == 1) {
+			this.x=(this.x+1+dx)%dx;
+		}
+		if(this.sens == 2) {
+			this.y=(this.y+1+dx)%dx;
+		}
+		if(this.sens == 3) {
+			this.y=(this.y-1+dx)%dx;
+		}
+		for(int m=  0; m < Monde.getCarte().size();m++) {
+			if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
+				manger_pomme((Pomme) Monde.getCarte().get(m), Monde.getCarte());
+			}
+			
+		}
+	
 	}
-	public void manger_pomme(Pomme apple , ArrayList<Object> monde) { // A Continuer
+
+	public void manger_pomme(Pomme apple , ArrayList<Object> monde) {
 		for(int i = 0; i < monde.size(); i++) {
 				if(monde.get(i).equals(apple)){
 					if (apple.isEstPourrie()) 
@@ -41,30 +58,6 @@ public abstract class M {
 						nb_pomme_manger += 2 ;
 					monde.remove(i);
 					return ;
-			}
-		}
-	}
-	
-	public static void finB() {
-		for (int c=0;c<Monde.getCarte().size();c++) {
-
-			if (Monde.getCarte().get(c) instanceof M) {
-				for(int i = ((M)Monde.getCarte().get(c)).getX() - 1; i <= ((M)Monde.getCarte().get(c)).getX() + 1; i++) {
-					for(int j = ((M)Monde.getCarte().get(c)).getY() - 1; j <= ((M)Monde.getCarte().get(c)).getY() + 1; j++) {
-						for(int m=0; m < Monde.getCarte().size();m++) {
-							if (Monde.getCarte().get(m) instanceof Braconnier && ((Braconnier) Monde.getCarte().get(m)).getX() == i && ((Braconnier) Monde.getCarte().get(m)).getY() == j) {
-								if (((M) Monde.getCarte().get(c)).getNb_evolution() == 0 && Math.random() < 0.1) {
-									Monde.getCarte().remove(Monde.getCarte().get(m));
-									return ;
-								}
-								if (((M) Monde.getCarte().get(c)).getNb_evolution() == 1 && Math.random() < 0.2) {
-									Monde.getCarte().remove(Monde.getCarte().get(m));
-									return ;
-								}
-							}
-						}
-					}
-				}
 			}
 		}
 	}
@@ -95,6 +88,33 @@ public abstract class M {
 	}
 	public int getNb_evolution() {
 		return nb_evolution;
+	}
+	public int getSens() {
+		return this.sens;
+	}
+	public void setSens() {
+		for(int m=  0; m < Monde.getCarte().size();m++) {
+			if((Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
+					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
+					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) ||
+					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1)) {
+				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
+					this.sens = 0;
+				}
+				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
+					this.sens = 1;
+				}
+				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) {
+					this.sens = 2;
+				}
+				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1) {
+					this.sens = 3;
+				}
+			}
+			else {
+				this.sens = (int)(Math.random()*4);
+			}
+		}
 	}
 	
 	

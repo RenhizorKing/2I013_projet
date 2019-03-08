@@ -1,1 +1,2 @@
-# JAVA_Project_Erol
+# JAVA_Project
+Braconnier Pokemon Ecosys

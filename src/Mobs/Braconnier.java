@@ -17,23 +17,20 @@ public class Braconnier {
 	}
 	public void move(int dx, int dy) {
 		int x1,x2;
-		for(int i = (this.getX() - 1 + dx)%dx; i <= (this.getX() + 1 + dx)%dx; i++) {
-			for(int j = (this.getY() - 1+ dy )%dy; j <= (this.getY() + 1 + dy)%dy; j++) {
-				for(int m=0; m < Monde.getCarte().size();m++) {
-					if(Monde.getCarte().get(m) instanceof M && ((M) Monde.getCarte().get(m)).getX() == i && ((M) Monde.getCarte().get(m)).getY() == j) {
-						if (Math.random() < 0.85) {
-							this.x = ((M) Monde.getCarte().get(m)).getX();
-							this.y = ((M) Monde.getCarte().get(m)).getY();
-							return;							
-						}
-					}
+		for (int i=0;i<Monde.getCarte().size();i++) {
+			if (Monde.getCarte().get(i) instanceof M) { //&& Utilitaire.distance2O(((M) Monde.getCarte().get(i)),this)<=1) {
+				if (Math.random() <=1.0) {
+					System.out.println("GO GO");
+					x=((M)Monde.getCarte().get(i)).getX();
+					y=((M)Monde.getCarte().get(i)).getY();
+					return ;
 				}
 			}
 		}
 		do {
 			x1= (int) (Math.random()*3) -1;
 			x2= (int) (Math.random()*3) -1;
-		}while(Monde.yaArbres(((x+x1+dx)%dx),((y+x2+dy)%dy)));
+		}while(Monde.testC(((x+x1+dx)%dx),((y+x2+dy)%dy)).size() !=0);
 		x=(x+x1+dx)%dx;
 		y=(y+x2+dy)%dy;
 	}
@@ -45,13 +42,15 @@ public class Braconnier {
 					for(int j = ((Braconnier)Monde.getCarte().get(c)).getY() - 1; j <= ((Braconnier)Monde.getCarte().get(c)).getY() + 1; j++) {
 						for(int m=0; m < Monde.getCarte().size();m++) {
 							if (Monde.getCarte().get(m) instanceof M1 && ((M1) Monde.getCarte().get(m)).getX() == i && ((M1) Monde.getCarte().get(m)).getY() == j) {// si M1 voisin
-								if (Math.random() <0.3)
+								if (Math.random() <0.6)
 									Monde.getCarte().remove(Monde.getCarte().get(m));
+									//System.out.println("OK"+Monde.getCarte().size());
 									return ;
 							}
 							if (Monde.getCarte().get(m) instanceof M2 && ((M2) Monde.getCarte().get(m)).getX() == i && ((M2) Monde.getCarte().get(m)).getY() == j) {// si M2 voisin
-								if (Math.random() <0.4)
+								if (Math.random() <0.6)
 									Monde.getCarte().remove(Monde.getCarte().get(m));
+									//System.out.println("OK"+Monde.getCarte().size());
 									return ;
 							}
 						}
