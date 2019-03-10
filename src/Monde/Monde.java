@@ -39,15 +39,16 @@ public class Monde {
 					M1 monstre = new M1(x1, y1);
 					carte.add(monstre);
 				}else {
-					int x1= (int) (Math.random()*dx);
-					int y1 =(int) (Math.random()*dy);
-					M2 monstre = new M2(x1, y1);
-					carte.add(monstre);
+					//int x1= (int) (Math.random()*dx);
+					//int y1 =(int) (Math.random()*dy);
+					//M2 monstre = new M2(x1, y1);
+					//carte.add(monstre);
 				}
 			}
 		}*/
 		
-		carte.add(new M1(11,10));
+		carte.add(new M1(10,10));
+		//carte.add(new M1(6,6));
 		carte.add(new Arbre(9,10));
 		carte.add(new Arbre(11,10));
 		carte.add(new Arbre(10,9));
@@ -67,11 +68,18 @@ public class Monde {
 		}
 	}
 	
-	public void detail() {
+	public static void detail() {
 		System.out.println("Taille :"+carte.size());//pour debuger lors des erreurs
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof M)
+				System.out.println(""+carte.get(i).getClass()+ " x="+(((M)carte.get(i)).getX())+ " y="+" x="+(((M)carte.get(i)).getY()));
+			if (carte.get(i) instanceof Arbre)
+				System.out.println(""+carte.get(i).getClass()+ " x="+(((Arbre)carte.get(i)).getX())+ " y="+" x="+(((Arbre)carte.get(i)).getY()));
+
+		}
 	}
 	
-	public static ArrayList<Object> testC(int x,int y,Class<?> O) {//retourne une ArrayList composé de class de O ayant comme coordonéées [x,y]
+	public static ArrayList<Object> testC(int x,int y,Class O) {//retourne une ArrayList composé de class de O ayant comme coordonéées [x,y]
 		ArrayList<Object> agent_XY = new ArrayList<>();
 		//System.out.println(""+carte.size());
 		for (int i=0;i<carte.size();i++) {
@@ -111,10 +119,8 @@ public class Monde {
 	
 	public void Refresh() {
 		for (int i=0;i<carte.size();i++) {
-			if (carte.get(i) instanceof M) {
-			
+			if (carte.get(i) instanceof M) {	
 				((M) carte.get(i)).move(dx, dy);
-				
 			}
 			if (carte.get(i) instanceof Braconnier)
 				((Braconnier) carte.get(i)).move(dx, dy);

@@ -165,17 +165,19 @@ public class SpriteDemo extends JPanel {
 		Graphics2D g2 = (Graphics2D)g;
 		for ( int i1 = 0 ; i1 < dx ; i1++ ) {
 			for ( int j1 = 0 ; j1 < dy ; j1++ ) {
-				if (Terrain.getTerrain()[i1][j1] <=-15)
-					g2.drawImage(terreSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
-				else
-					g2.drawImage(grassSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
 				try {
+					if (Terrain.getTerrain()[i1][j1] <=-15)
+						g2.drawImage(terreSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
+					else
+						g2.drawImage(grassSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
 					if (Monde.testC(i1, j1,Mobs.Arbre.class).size() ==1) {
-						g2.drawImage(tSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
+						if (((Arbre) Monde.testC(i1,j1,Mobs.Arbre.class).get(0)).isEnfeu())
+							g2.drawImage(treeSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
+						else
+							g2.drawImage(tSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
 					}
 					
 					if (Monde.testC(i1, j1,Mobs.Pomme.class).size() !=0) {
-						//g2.drawImage(grassSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
 						if ((((Pomme) Monde.testC(i1, j1,Pomme.class).get(0)).isEstPourrie() == false))
 							g2.drawImage(Apple,spriteLength*i1,spriteLength*j1,spriteLength-10,spriteLength-10, frame);
 						if ((((Pomme) Monde.testC(i1, j1).get(0)).isEstPourrie() == true))
@@ -194,14 +196,11 @@ public class SpriteDemo extends JPanel {
 					ArrayList<Object> array_m=Monde.testC(i, j,Mobs.M1.class);
 					for (int m=0;m<array_m.size();m++) {
 						if (array_m.get(m) instanceof M1) {
-
+							M1 Hericendre = (M1)(array_m.get(m));
 							if(cpt_pas % 8 == 0) {
-								Hericendre = (M1)(array_m.get(m));
 								Hericendre.setSens();
 							}
 							if(Hericendre.getEvolution() == false) {
-								
-								Hericendre = (M1)(array_m.get(m));
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonFeuMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
 								}
@@ -257,16 +256,18 @@ public class SpriteDemo extends JPanel {
 							g2.drawImage(Chasseur,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);*/
 					}
 				}catch(Exception E) {
+					E.printStackTrace();
 				}
 			}
 	
 	}
 	public static void main(String[] args) {
-		
 		Monde monde = new Monde(dx=15,dy=15,40);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
+		//System.out.println(""+((M1) Monde.getCarte().get(0)).getSens());
 		//monde.detail();
+		//System.exit(123);
 		cpt_pas = 0;
 		marcher = 0;
 		step = 0;
@@ -280,9 +281,9 @@ public class SpriteDemo extends JPanel {
 				pas = 0;
 			}
 			if(cpt_pas % 8 == 0) {
-				monde.pomme_pop(step);
-				Pomme.duree();
-				Pomme.delete();
+				//monde.pomme_pop(step);
+				//Pomme.duree();
+				//Pomme.delete();
 				monde.Refresh();
 				cpt_pas = 0;
 				marcher = 0;
@@ -291,7 +292,7 @@ public class SpriteDemo extends JPanel {
 			marcher += 5 ;
 			//Braconnier.chasser();
 			try{
-				Thread.sleep(100); // en ms
+				Thread.sleep(10); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}

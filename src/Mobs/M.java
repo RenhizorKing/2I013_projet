@@ -28,6 +28,7 @@ public abstract class M {
 		
 	}
 	public void move(int dx, int dy) {
+		System.out.println("++++");
 		if(this.sens == 0) {
 			this.x=(this.x-1+dx)%dx;
 		}
@@ -91,7 +92,7 @@ public abstract class M {
 	}
 	public int getSens() {
 		return this.sens;
-	}
+	}/*
 	public void setSens() {
 		for(int m=  0; m < Monde.getCarte().size();m++) {
 			if((Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
@@ -115,7 +116,7 @@ public abstract class M {
 				this.sens = (int)(Math.random()*4);
 			}
 		}
-	}
+	}*/
 	
 	
 }
