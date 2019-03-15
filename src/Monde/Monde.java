@@ -23,7 +23,7 @@ public class Monde {
 
 	public Monde(int x, int y, int nb_A) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
-		dy=y;/*
+		dy=y;
 		for (int i=0;i<nb_A;i++) {
 			double p = Math.random();
 			if (p <= 0.4) {
@@ -33,26 +33,26 @@ public class Monde {
 				carte.add(arbres);
 			}else {
 				double p1 =  Math.random();
-				if (p1 <= 0.5) {
+				//if (p1 <= 0.5) {
 					int x1= (int) (Math.random()*dx);
 					int y1 =(int) (Math.random()*dy);
 					M1 monstre = new M1(x1, y1);
 					carte.add(monstre);
-				}else {
+				//}else {
 					//int x1= (int) (Math.random()*dx);
 					//int y1 =(int) (Math.random()*dy);
 					//M2 monstre = new M2(x1, y1);
 					//carte.add(monstre);
-				}
+				//}
 			}
-		}*/
-		
+		}
+		/*
 		carte.add(new M1(10,10));
 		//carte.add(new M1(6,6));
 		carte.add(new Arbre(9,10));
 		carte.add(new Arbre(11,10));
 		carte.add(new Arbre(10,9));
-		carte.add(new Arbre(10,11));
+		carte.add(new Arbre(10,11));*/
 	}
 	
 	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte
@@ -67,15 +67,26 @@ public class Monde {
 			carte.add(apple);
 		}
 	}
+	public static int compteM() {
+		int cpt=0;
+		for (int i=0;i<carte.size();i++) {
+			//System.out.println(""+carte.get(i).getClass());
+			if (carte.get(i) instanceof M)
+				cpt+=1;
+		}
+		return cpt;
 	
+	}
 	public static void detail() {
 		System.out.println("Taille :"+carte.size());//pour debuger lors des erreurs
 		for (int i=0;i<carte.size();i++) {
+			System.out.println(""+carte.get(i).getClass());
+			/*
 			if (carte.get(i) instanceof M)
-				System.out.println(""+carte.get(i).getClass()+ " x="+(((M)carte.get(i)).getX())+ " y="+" x="+(((M)carte.get(i)).getY()));
+				System.out.println(""+carte.get(i).getClass()+ " x="+(((M)carte.get(i)).getX())+ " y="+(((M)carte.get(i)).getY()));
 			if (carte.get(i) instanceof Arbre)
-				System.out.println(""+carte.get(i).getClass()+ " x="+(((Arbre)carte.get(i)).getX())+ " y="+" x="+(((Arbre)carte.get(i)).getY()));
-
+				System.out.println(""+carte.get(i).getClass()+ " x="+(((Arbre)carte.get(i)).getX())+ " y="+(((Arbre)carte.get(i)).getY()));
+			*/
 		}
 	}
 	
@@ -129,30 +140,18 @@ public class Monde {
 			}
 		}
 	}
+	
+	public static void grandir() {
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof M)
+				((M) carte.get(i)).setStep();
+		}
+	}
+	
 	public static int getDirection() {
 		return direction;
 	}
-	/*
-	public void Afficher() {
-		for (int j=0;j<dx;j++) {
-			for (int i=0;i<dy;i++) {
-				
-				if (testC(i, j) != null) {
-					if (carte.get(i).getClass() == Mobs.M1.class)
-						System.out.print(((M) carte.get(i)).getS()+" ");
-					if (carte.get(i).getClass() == Mobs.M2.class)
-						System.out.print(((M) carte.get(i)).getS()+" ");
-					if (carte.get(i).getClass() == Mobs.Arbre.class)
-						System.out.print(((Arbre) carte.get(i)).getS()+" ");
-					
-				}else {
-					System.out.print("- ");
-				}
-			}
-			System.out.println("");
-		}
-		System.out.println("");
-	}*/
+	
 
 	public static int getDx() {
 		return dx;

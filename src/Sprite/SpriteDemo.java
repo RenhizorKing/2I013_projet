@@ -262,7 +262,7 @@ public class SpriteDemo extends JPanel {
 	
 	}
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=15,dy=15,40);
+		Monde monde = new Monde(dx=15,dy=15,10);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
 		//System.out.println(""+((M1) Monde.getCarte().get(0)).getSens());
@@ -281,18 +281,20 @@ public class SpriteDemo extends JPanel {
 				pas = 0;
 			}
 			if(cpt_pas % 8 == 0) {
-				//monde.pomme_pop(step);
-				//Pomme.duree();
-				//Pomme.delete();
+				monde.pomme_pop(step);
+				Pomme.duree();
+				Pomme.delete();
 				monde.Refresh();
 				cpt_pas = 0;
 				marcher = 0;
 				terrain.Stockage_passage();
+				Monde.grandir();
+				M.reproduction();
 			}
 			marcher += 5 ;
 			//Braconnier.chasser();
 			try{
-				Thread.sleep(10); // en ms
+				Thread.sleep(20); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}

@@ -14,6 +14,7 @@ public abstract class M {
 	protected boolean evolution;
 
 
+
 	protected int step;
 	protected  int atk;
 	protected  int pv;
@@ -76,7 +77,11 @@ public abstract class M {
 	public int getStep() {
 		return step;
 	}
+	
 
+	public void setStep() {
+		this.step += 1;
+	}
 	public int getAtk() {
 		return atk;
 	}
@@ -117,6 +122,23 @@ public abstract class M {
 			}
 		}
 	}*/
+	
+	public static void reproduction() {
+		ArrayList<Object> carte = Monde.getCarte();
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof M && ((M1) carte.get(i)).getStep() >20) {
+				for (int j=0;j<carte.size();j++) {
+					if (!(carte.get(j).equals(carte.get(i))) && carte.get(j).getClass().equals(carte.get(i).getClass()) && ((M1) carte.get(j)).getStep() >20 && ((M)carte.get(j)).getX() == ((M)carte.get(i)).getX() && ((M)carte.get(j)).getY() == ((M)carte.get(i)).getY() ) {
+						if (carte.get(i) instanceof M1) {
+							//System.out.println("toto");
+							carte.add(new M1(((M)carte.get(j)).getX(), ((M)carte.get(j)).getY()));
+							return ;
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	
 }
