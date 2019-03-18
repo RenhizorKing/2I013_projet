@@ -131,7 +131,6 @@ public abstract class M {
 				for (int j=0;j<taille ;j++) {
 					if (!(carte.get(j).equals(carte.get(i))) && carte.get(j).getClass().equals(carte.get(i).getClass()) && ((M) carte.get(j)).getStep() >20 && ((M)carte.get(j)).getX() == ((M)carte.get(i)).getX() && ((M)carte.get(j)).getY() == ((M)carte.get(i)).getY() ) {
 						if (carte.get(i) instanceof M1) {
-							//System.out.println("toto");
 							((M1) carte.get(i)).step=0;
 							((M1) carte.get(j)).step=0;
 							carte.add(new M1(((M)carte.get(j)).getX(), ((M)carte.get(j)).getY()));
