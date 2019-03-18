@@ -29,6 +29,5 @@ public class Arbre{
 
 	public int getY() {
 		return y;
-	}
-	
+	}	
 }

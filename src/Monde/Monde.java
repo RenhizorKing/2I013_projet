@@ -148,6 +148,15 @@ public class Monde {
 		}
 	}
 	
+	public void incendie() {
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof Arbre) {
+				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY(), Mobs.M1.class).size() !=0){
+					
+				}
+			}
+		}
+	}
 	public static int getDirection() {
 		return direction;
 	}
