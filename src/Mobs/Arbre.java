@@ -2,6 +2,7 @@ package Mobs;
 
 public class Arbre{
 	private boolean enfeu;
+	private boolean brulé;
 	private int x;
 	private int y;
 	private String S;
@@ -10,6 +11,8 @@ public class Arbre{
 		this.x=x;
 		this.y=y;
 		S="T";
+		enfeu=false;
+		brulé=false;
 	}
 	
 	public boolean isEnfeu() {
@@ -19,6 +22,15 @@ public class Arbre{
 		this.enfeu = enfeu;
 		
 	}
+	
+	public boolean isBrulé() {
+		return brulé;
+	}
+
+	public void setBrulé(boolean brulé) {
+		this.brulé = brulé;
+	}
+
 	public String getS() {
 		return S;
 	}

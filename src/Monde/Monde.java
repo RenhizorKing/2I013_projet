@@ -187,7 +187,6 @@ public class Monde {
 	
 	public void propagation_F() {
 		try {
-		ArrayList<Object> carte_depart = (ArrayList<Object>) carte.clone();
 		//System.out.println(""+carte_depart.toString());
 		//System.out.println(""+carte.toString());
 		
@@ -196,27 +195,27 @@ public class Monde {
 			if (carte.get(i) instanceof Arbre && ((Arbre) carte.get(i)).isEnfeu()) {
 				if (testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).size() !=0) {
 					System.out.println(""+testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).toString());
-					a= carte_depart.indexOf(testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).get(0));
+					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).get(0));
 					System.out.println(""+a);
-					((Arbre) carte_depart.get(a)).setEnfeu(true);
+					((Arbre) carte.get(a)).setBrulé(true);
 				}
 				if (testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).size() !=0) {
 					System.out.println(""+testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).toString());
-					a= carte_depart.indexOf(testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).get(0));
+					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).get(0));
 					System.out.println(""+a);
-					((Arbre) carte_depart.get(a)).setEnfeu(true);
+					((Arbre) carte.get(a)).setBrulé(true);
 				}
 				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).size() !=0) {
 					System.out.println(""+testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).toString());
-					a= carte_depart.indexOf(testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).get(0));
+					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).get(0));
 					System.out.println(""+a);
-					((Arbre) carte_depart.get(a)).setEnfeu(true);
+					((Arbre) carte.get(a)).setBrulé(true);
 				}
 				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).size() !=0) {
 					System.out.println(""+testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).toString());
-					a= carte_depart.indexOf(testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).get(0));
+					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).get(0));
 					System.out.println(""+a);
-					((Arbre) carte_depart.get(a)).setEnfeu(true);
+					((Arbre) carte.get(a)).setBrulé(true);
 				}
 			}
 		}
@@ -225,6 +224,15 @@ public class Monde {
 			System.exit(0);
 		}
 	}
+	
+	public void enfeu() {
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof Arbre && ((Arbre) carte.get(i)).isBrulé()) {
+				((Arbre) carte.get(i)).setEnfeu(true);
+			}
+		}
+	}
+			
 	public static int getDirection() {
 		return direction;
 	}

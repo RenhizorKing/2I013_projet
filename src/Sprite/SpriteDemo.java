@@ -289,11 +289,12 @@ public class SpriteDemo extends JPanel {
 				M.reproduction();
 				monde.depart_feu();
 				monde.propagation_F();
+				monde.enfeu();
 			}
 			marcher += 5 ;
 			//Braconnier.chasser();
 			try{
-				Thread.sleep(1000); // en ms
+				Thread.sleep(20); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}
