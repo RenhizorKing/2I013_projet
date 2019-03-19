@@ -23,7 +23,7 @@ public class Monde {
 
 	public Monde(int x, int y, int nb_A) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
-		dy=y;/*
+		dy=y;
 		for (int i=0;i<nb_A;i++) {
 			double p = Math.random();
 			if (p <= 0.4) {

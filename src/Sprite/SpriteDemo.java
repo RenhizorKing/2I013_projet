@@ -15,6 +15,9 @@ import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import java.awt.*;
+import java.awt.event.*;
+
 import Mobs.Arbre;
 import Mobs.Braconnier;
 import Mobs.M;
@@ -24,7 +27,7 @@ import Mobs.Pomme;
 import Monde.Monde;
 import Monde.Terrain;
 
-public class SpriteDemo extends JPanel {
+public class SpriteDemo extends JPanel implements KeyListener{
 
 
 	private JFrame frame;
@@ -51,6 +54,7 @@ public class SpriteDemo extends JPanel {
 	private static int cpt_pas = 0;
 	private static M1 Hericendre;
 	private static int step;
+	public int vitesse;
 
 	public SpriteDemo()
 	{
@@ -156,8 +160,12 @@ public class SpriteDemo extends JPanel {
 
 		frame = new JFrame("World of Sprite");
 		frame.add(this);
+		//dx=645;
+		//dy=665;
 		frame.setSize(645,665);
 		frame.setVisible(true);
+		vitesse=20;
+		
 	}
 
 	public void paint(Graphics g)
@@ -259,12 +267,52 @@ public class SpriteDemo extends JPanel {
 					E.printStackTrace();
 				}
 			}
-	
 	}
+	
+	public void keyTyped(KeyEvent evmt) {
+		
+	}
+	
+	public void keyPressed(KeyEvent evmt) {
+		int source =evmt.getKeyCode();
+		if (source == KeyEvent.VK_RIGHT) {
+			if (vitesse == 20)
+				vitesse=10;
+			if (vitesse == 30)
+				vitesse=20;
+			
+		}
+		if (source == KeyEvent.VK_LEFT) {
+			if (vitesse == 20)
+				vitesse=30;
+			if (vitesse == 10)
+				vitesse=20;			
+		}
+		if (source == 107) {
+			spriteLength+=10;
+			//this.getGraphics().clearRect(0, 0, this.getWidth()-10, this.getHeight()-10); 
+			frame.setSize(645,665);
+			frame.setVisible(true);
+		}
+		if (source == 109) {
+			spriteLength-=10;
+			frame.setSize(645,665);
+			frame.setVisible(true);
+			//this.getGraphics().clearRect(0, 0, this.getWidth()-10, this.getHeight()-10); 
+		}
+	}
+	
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public static void main(String[] args) {
 		Monde monde = new Monde(dx=15,dy=15,70);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
+		a.setFocusable(true);
+        a.addKeyListener(a);
 		cpt_pas = 0;
 		marcher = 0;
 		step = 0;
@@ -287,14 +335,14 @@ public class SpriteDemo extends JPanel {
 				terrain.Stockage_passage();
 				Monde.grandir();
 				M.reproduction();
-				monde.depart_feu();
-				monde.propagation_F();
-				monde.enfeu();
+				//monde.depart_feu();
+				//monde.propagation_F();
+				//monde.enfeu();
 			}
 			marcher += 5 ;
 			//Braconnier.chasser();
 			try{
-				Thread.sleep(20); // en ms
+				Thread.sleep(a.vitesse); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -302,4 +350,5 @@ public class SpriteDemo extends JPanel {
 			step++;
 		}
 	}
+
 }
