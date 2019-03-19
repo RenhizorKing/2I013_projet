@@ -10,7 +10,6 @@ public class M1 extends M{
 		atk=(int) (Math.random()*100);
 		pv=500;
 		S="X";
-		sens=-1;
 	}
 
 	public String getS() {
@@ -18,7 +17,6 @@ public class M1 extends M{
 	}
 
 	public void move(int dx, int dy) {
-		//System.out.println("sens="+this.sens);
 		if (this.sens == 0) {
 			this.x=(this.x-1+dx)%dx;
 		}
@@ -96,8 +94,6 @@ public class M1 extends M{
 			}
 		}
 		int x1,y1;
-		int cpt=0;
-		//Monde.detail();
 		do {
 			this.sens = (int)(Math.random()*4);
 			x1=this.x;
@@ -114,14 +110,8 @@ public class M1 extends M{
 			if (this.sens == 3) {
 				y1=(y1-1+Monde.getDy())%Monde.getDy();
 			}
-			//System.out.println("toto | "+Monde.testC(x1, y1,Mobs.Arbre.class).size()+" x1="+x1 +" y1="+y1);
 		}while(Monde.testC(x1, y1,Mobs.Arbre.class).size() ==1);
-		//System.out.println("-----------");
-		//System.out.println("popo | "+this.sens + " x1="+this.x+" y1="+this.y);
-		
-			//System.exit(321);
-
-	}
+}
 	
 	public int getSens() {
 		return this.sens;

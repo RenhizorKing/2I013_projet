@@ -97,31 +97,7 @@ public abstract class M {
 	}
 	public int getSens() {
 		return this.sens;
-	}/*
-	public void setSens() {
-		for(int m=  0; m < Monde.getCarte().size();m++) {
-			if((Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1)) {
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
-					this.sens = 0;
-				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
-					this.sens = 1;
-				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) {
-					this.sens = 2;
-				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1) {
-					this.sens = 3;
-				}
-			}
-			else {
-				this.sens = (int)(Math.random()*4);
-			}
-		}
-	}*/
+	}
 	
 	public static void reproduction() {
 		ArrayList<Object> carte = Monde.getCarte();
@@ -131,9 +107,17 @@ public abstract class M {
 				for (int j=0;j<taille ;j++) {
 					if (!(carte.get(j).equals(carte.get(i))) && carte.get(j).getClass().equals(carte.get(i).getClass()) && ((M) carte.get(j)).getStep() >20 && ((M)carte.get(j)).getX() == ((M)carte.get(i)).getX() && ((M)carte.get(j)).getY() == ((M)carte.get(i)).getY() ) {
 						if (carte.get(i) instanceof M1) {
+							//System.out.println("toto");
 							((M1) carte.get(i)).step=0;
 							((M1) carte.get(j)).step=0;
 							carte.add(new M1(((M)carte.get(j)).getX(), ((M)carte.get(j)).getY()));
+							break ;
+						}
+						if (carte.get(i) instanceof M2) {
+							//System.out.println("toto");
+							((M2) carte.get(i)).step=0;
+							((M2) carte.get(j)).step=0;
+							carte.add(new M2(((M)carte.get(j)).getX(), ((M)carte.get(j)).getY()));
 							break ;
 						}
 					}

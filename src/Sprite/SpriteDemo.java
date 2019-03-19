@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.util.ArrayList;
@@ -14,10 +16,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.AffineTransform;
 
 import Mobs.Arbre;
 import Mobs.Braconnier;
@@ -43,21 +41,23 @@ public class SpriteDemo extends JPanel implements KeyListener{
 	private Image[][] PokemonFeuEvolueMove;
 	private Image PokemonFeuEvolue;
 	private Image PokemonEau;
+	private Image[][] PokemonEauMove;
+	private Image[][] PokemonEauEvolueMove;
 	private Image PokemonEauEvolue;
 	private Image Apple;
 	private Image ApplePourri;
 	private Image Chasseur;
 	public static int dx;
 	public static int dy;
-	public static int x;
-	public static int y;
+	private int x;
+	private int y;
 	private int spriteLength = 40;
 	private static int pas = 0;
 	private static int marcher = 0;
 	private static int cpt_pas = 0;
-	private static M1 Hericendre;
 	private static int step;
 	public int vitesse;
+
 
 	public SpriteDemo()
 	{
@@ -154,6 +154,82 @@ public class SpriteDemo extends JPanel implements KeyListener{
 			
 			
 			
+			PokemonEauMove = new Image[4][8];  //carapuce
+			PokemonEauMove[0][0] = ImageIO.read(new File("Carapuce_walkdown1.png"));
+			PokemonEauMove[0][1] = ImageIO.read(new File("Carapuce_walkdown2.png"));
+			PokemonEauMove[0][2] = ImageIO.read(new File("Carapuce_walkdown3.png"));
+			PokemonEauMove[0][3] = ImageIO.read(new File("Carapuce_walkdown4.png"));
+			PokemonEauMove[0][4] = ImageIO.read(new File("Carapuce_walkdown1.png"));  //deplacement vers le bas
+			PokemonEauMove[0][5] = ImageIO.read(new File("Carapuce_walkdown2.png"));
+			PokemonEauMove[0][6] = ImageIO.read(new File("Carapuce_walkdown3.png"));
+			PokemonEauMove[0][7] = ImageIO.read(new File("Carapuce_walkdown4.png"));
+			
+			PokemonEauMove[1][0] = ImageIO.read(new File("Carapuce_walkup1.png"));
+			PokemonEauMove[1][1] = ImageIO.read(new File("Carapuce_walkup2.png"));
+			PokemonEauMove[1][2] = ImageIO.read(new File("Carapuce_walkup3.png"));
+			PokemonEauMove[1][3] = ImageIO.read(new File("Carapuce_walkup4.png"));
+			PokemonEauMove[1][4] = ImageIO.read(new File("Carapuce_walkup1.png"));  //deplacement vers le haut
+			PokemonEauMove[1][5] = ImageIO.read(new File("Carapuce_walkup2.png"));
+			PokemonEauMove[1][6] = ImageIO.read(new File("Carapuce_walkup3.png"));
+			PokemonEauMove[1][7] = ImageIO.read(new File("Carapuce_walkup4.png"));
+			
+			PokemonEauMove[2][0] = ImageIO.read(new File("Carapuce_walkleft1.png"));
+			PokemonEauMove[2][1] = ImageIO.read(new File("Carapuce_walkleft2.png"));
+			PokemonEauMove[2][2] = ImageIO.read(new File("Carapuce_walkleft3.png"));
+			PokemonEauMove[2][3] = ImageIO.read(new File("Carapuce_walkleft4.png"));
+			PokemonEauMove[2][4] = ImageIO.read(new File("Carapuce_walkleft1.png"));  //deplacement vers la gauche
+			PokemonEauMove[2][5] = ImageIO.read(new File("Carapuce_walkleft2.png"));
+			PokemonEauMove[2][6] = ImageIO.read(new File("Carapuce_walkleft3.png"));
+			PokemonEauMove[2][7] = ImageIO.read(new File("Carapuce_walkleft4.png"));
+			
+			PokemonEauMove[3][0] = ImageIO.read(new File("Carapuce_walkright1.png"));
+			PokemonEauMove[3][1] = ImageIO.read(new File("Carapuce_walkright2.png"));
+			PokemonEauMove[3][2] = ImageIO.read(new File("Carapuce_walkright3.png"));
+			PokemonEauMove[3][3] = ImageIO.read(new File("Carapuce_walkright4.png"));
+			PokemonEauMove[3][4] = ImageIO.read(new File("Carapuce_walkright1.png"));  //deplacement vers la droite
+			PokemonEauMove[3][5] = ImageIO.read(new File("Carapuce_walkright2.png"));
+			PokemonEauMove[3][6] = ImageIO.read(new File("Carapuce_walkright3.png"));
+			PokemonEauMove[3][7] = ImageIO.read(new File("Carapuce_walkright4.png"));
+			
+			PokemonEauEvolueMove = new Image[4][8];  //carabaffe
+			PokemonEauEvolueMove[0][0] = ImageIO.read(new File("Carabaffe_walkdown1.png"));
+			PokemonEauEvolueMove[0][1] = ImageIO.read(new File("Carabaffe_walkdown2.png"));
+			PokemonEauEvolueMove[0][2] = ImageIO.read(new File("Carabaffe_walkdown3.png"));
+			PokemonEauEvolueMove[0][3] = ImageIO.read(new File("Carabaffe_walkdown4.png"));
+			PokemonEauEvolueMove[0][4] = ImageIO.read(new File("Carabaffe_walkdown1.png"));  //deplacement vers le bas
+			PokemonEauEvolueMove[0][5] = ImageIO.read(new File("Carabaffe_walkdown2.png"));
+			PokemonEauEvolueMove[0][6] = ImageIO.read(new File("Carabaffe_walkdown3.png"));
+			PokemonEauEvolueMove[0][7] = ImageIO.read(new File("Carabaffe_walkdown4.png"));
+			
+			PokemonEauEvolueMove[1][0] = ImageIO.read(new File("Carabaffe_walkup1.png"));
+			PokemonEauEvolueMove[1][1] = ImageIO.read(new File("Carabaffe_walkup2.png"));
+			PokemonEauEvolueMove[1][2] = ImageIO.read(new File("Carabaffe_walkup3.png"));
+			PokemonEauEvolueMove[1][3] = ImageIO.read(new File("Carabaffe_walkup4.png"));
+			PokemonEauEvolueMove[1][4] = ImageIO.read(new File("Carabaffe_walkup1.png"));  //deplacement vers le haut
+			PokemonEauEvolueMove[1][5] = ImageIO.read(new File("Carabaffe_walkup2.png"));
+			PokemonEauEvolueMove[1][6] = ImageIO.read(new File("Carabaffe_walkup3.png"));
+			PokemonEauEvolueMove[1][7] = ImageIO.read(new File("Carabaffe_walkup4.png"));
+			
+			PokemonEauEvolueMove[2][0] = ImageIO.read(new File("Carabaffe_walkleft1.png"));
+			PokemonEauEvolueMove[2][1] = ImageIO.read(new File("Carabaffe_walkleft2.png"));
+			PokemonEauEvolueMove[2][2] = ImageIO.read(new File("Carabaffe_walkleft3.png"));
+			PokemonEauEvolueMove[2][3] = ImageIO.read(new File("Carabaffe_walkleft4.png"));
+			PokemonEauEvolueMove[2][4] = ImageIO.read(new File("Carabaffe_walkleft1.png"));  //deplacement vers la gauche
+			PokemonEauEvolueMove[2][5] = ImageIO.read(new File("Carabaffe_walkleft2.png"));
+			PokemonEauEvolueMove[2][6] = ImageIO.read(new File("Carabaffe_walkleft3.png"));
+			PokemonEauEvolueMove[2][7] = ImageIO.read(new File("Carabaffe_walkleft4.png"));
+			
+			PokemonEauEvolueMove[3][0] = ImageIO.read(new File("Carabaffe_walkright1.png"));
+			PokemonEauEvolueMove[3][1] = ImageIO.read(new File("Carabaffe_walkright2.png"));
+			PokemonEauEvolueMove[3][2] = ImageIO.read(new File("Carabaffe_walkright3.png"));
+			PokemonEauEvolueMove[3][3] = ImageIO.read(new File("Carabaffe_walkright4.png"));
+			PokemonEauEvolueMove[3][4] = ImageIO.read(new File("Carabaffe_walkright1.png"));  //deplacement vers la droite
+			PokemonEauEvolueMove[3][5] = ImageIO.read(new File("Carabaffe_walkright2.png"));
+			PokemonEauEvolueMove[3][6] = ImageIO.read(new File("Carabaffe_walkright3.png"));
+			PokemonEauEvolueMove[3][7] = ImageIO.read(new File("Carabaffe_walkright4.png"));
+			
+			
+			
 		}
 		catch(Exception e)
 		{
@@ -168,7 +244,6 @@ public class SpriteDemo extends JPanel implements KeyListener{
 		frame.setSize(x,y+37);
 		frame.setVisible(true);
 		vitesse=30;
-		
 	}
 
 	public void paint(Graphics g)
@@ -228,7 +303,7 @@ public class SpriteDemo extends JPanel implements KeyListener{
 							if(Hericendre.getEvolution() == true) {
 								
 								Hericendre = (M1)(array_m.get(m));
-								if ( Hericendre.getSens() == 0 ) { //va a gaucheindex
+								if ( Hericendre.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonFeuEvolueMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
 								}
 								
@@ -243,6 +318,8 @@ public class SpriteDemo extends JPanel implements KeyListener{
 								}
 							}
 						}
+							
+		
 							
 		
 					
@@ -266,17 +343,55 @@ public class SpriteDemo extends JPanel implements KeyListener{
 						if (Monde.testC(i, j) instanceof Braconnier)
 							g2.drawImage(Chasseur,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);*/
 					}
+					ArrayList<Object> array_m2=Monde.testC(i, j,Mobs.M2.class);
+					for (int m=0;m<array_m2.size();m++) {
+						if (array_m2.get(m) instanceof M2) {
+							M2 Carapuce = (M2)(array_m2.get(m));
+							if(cpt_pas % 8 == 0) {
+								Carapuce.setSens();
+							}
+							if(Carapuce.getEvolution() == false) {
+								if ( Carapuce.getSens() == 0 ) { //va a gauche
+									g2.drawImage(PokemonEauMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+								}
+								if ( Carapuce.getSens() == 1 ) { //va a droite
+									g2.drawImage(PokemonEauMove[3][pas],spriteLength*i + SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+								}
+								if ( Carapuce.getSens() == 2 ) { //va en bas
+									g2.drawImage(PokemonEauMove[0][pas],spriteLength*i ,spriteLength*j + SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
+								}
+								if ( Carapuce.getSens() == 3 ) { //va en haut
+									g2.drawImage(PokemonEauMove[1][pas],spriteLength*i ,spriteLength*j - SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
+								}
+							}
+							if(Carapuce.getEvolution() == true) {
+								
+								Carapuce = (M2)(array_m2.get(m));
+								if ( Carapuce.getSens() == 0 ) { //va a gauche
+									g2.drawImage(PokemonEauEvolueMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+								}
+								
+								if ( Carapuce.getSens() == 1 ) { //va a droite
+									g2.drawImage(PokemonEauEvolueMove[3][pas],spriteLength*i + SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+								}
+								if ( Carapuce.getSens() == 2 ) { //va en bas
+									g2.drawImage(PokemonEauEvolueMove[0][pas],spriteLength*i ,spriteLength*j + SpriteDemo.marcher,spriteLength,spriteLength, frame);
+								}
+								if ( Carapuce.getSens() == 3 ) { //va en haut
+									g2.drawImage(PokemonEauEvolueMove[1][pas],spriteLength*i ,spriteLength*j - SpriteDemo.marcher,spriteLength,spriteLength, frame);
+								}
+							}
+						}
+					}
 				}catch(Exception E) {
 					E.printStackTrace();
 				}
+				
 			}
 	}
-	
-	public void keyTyped(KeyEvent evmt) {
-		
-	}
-	
+	@Override
 	public void keyPressed(KeyEvent evmt) {
+		
 		int source =evmt.getKeyCode();
 		if (source == KeyEvent.VK_RIGHT) {
 			if (vitesse == 20)
@@ -307,20 +422,29 @@ public class SpriteDemo extends JPanel implements KeyListener{
 			frame.setSize(x,y+37);
 			frame.setVisible(true);
 			//this.getGraphics().clearRect(0, 0, this.getWidth()-10, this.getHeight()-10); 
-		}
+		}		
 	}
 	
+	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=15,dy=15,70);
+		Monde monde = new Monde(dx=15,dy=15,15);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
 		a.setFocusable(true);
         a.addKeyListener(a);
+		//System.out.println(""+((M1) Monde.getCarte().get(0)).getSens());
+		//monde.detail();
+		//System.exit(123);
 		cpt_pas = 0;
 		marcher = 0;
 		step = 0;
@@ -342,7 +466,7 @@ public class SpriteDemo extends JPanel implements KeyListener{
 				marcher = 0;
 				terrain.Stockage_passage();
 				Monde.grandir();
-				M.reproduction();
+				//M.reproduction();
 				monde.depart_feu();
 				monde.propagation_F();
 				monde.enfeu();

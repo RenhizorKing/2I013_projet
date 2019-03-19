@@ -13,7 +13,9 @@ public class Monde {
 	private static int dx;
 	private static int dy;
 	private static ArrayList<Object> carte = new ArrayList<>();
-	private static int direction;	
+	private static int direction;
+	private int cpt = 0;
+	
 	
 	public static ArrayList<Object> getCarte() {
 		return carte;
@@ -30,34 +32,27 @@ public class Monde {
 				Arbre arbres = new Arbre(x1, y1);
 				carte.add(arbres);
 			}else {
-				//double p1 =  Math.random();
-				//if (p1 <= 0.5) {
-					//int x1= (int) (Math.random()*dx);
-					//int y1 =(int) (Math.random()*dy);
-					//M1 monstre = new M1(x1, y1);
-					//carte.add(monstre);
-				//}else {
-					//int x1= (int) (Math.random()*dx);
-					//int y1 =(int) (Math.random()*dy);
-					//M2 monstre = new M2(x1, y1);
-					//carte.add(monstre);
-				//}
+				double p1 =  Math.random();
+				if (p1 <= 0.5) {
+					int x1= (int) (Math.random()*dx);
+					int y1 =(int) (Math.random()*dy);
+					M1 monstre = new M1(x1, y1);
+					carte.add(monstre);
+				}else {
+					int x1= (int) (Math.random()*dx);
+					int y1 =(int) (Math.random()*dy);
+					M2 monstre = new M2(x1, y1);
+					carte.add(monstre);
+				}
 			}
 		}
-		carte.add(new M1(6,6));
 		/*
+		carte.add(new M1(10,10));
+		//carte.add(new M1(6,6));
 		carte.add(new Arbre(9,10));
 		carte.add(new Arbre(11,10));
 		carte.add(new Arbre(10,9));
 		carte.add(new Arbre(10,11));*/
-		
-		carte.add(new M1(0,0));
-		carte.add(new Arbre(10,9));
-		((Arbre) carte.get(1)).setEnfeu(true);
-		carte.add(new Arbre(10,8));
-		carte.add(new Arbre(10,7));
-		carte.add(new Arbre(10,6));
-
 	}
 	
 	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte
@@ -222,7 +217,7 @@ public class Monde {
 			}
 		}
 	}
-			
+	
 	public static int getDirection() {
 		return direction;
 	}
