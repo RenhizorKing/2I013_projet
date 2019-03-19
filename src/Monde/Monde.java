@@ -13,9 +13,7 @@ public class Monde {
 	private static int dx;
 	private static int dy;
 	private static ArrayList<Object> carte = new ArrayList<>();
-	private static int direction;
-	private int cpt = 0;
-	
+	private static int direction;	
 	
 	public static ArrayList<Object> getCarte() {
 		return carte;
@@ -194,27 +192,19 @@ public class Monde {
 		for (int i=0;i<carte.size();i++) {
 			if (carte.get(i) instanceof Arbre && ((Arbre) carte.get(i)).isEnfeu()) {
 				if (testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).size() !=0) {
-					System.out.println(""+testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).toString());
 					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).get(0));
-					System.out.println(""+a);
 					((Arbre) carte.get(a)).setBrulé(true);
 				}
 				if (testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).size() !=0) {
-					System.out.println(""+testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).toString());
 					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).get(0));
-					System.out.println(""+a);
 					((Arbre) carte.get(a)).setBrulé(true);
 				}
 				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).size() !=0) {
-					System.out.println(""+testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).toString());
 					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).get(0));
-					System.out.println(""+a);
 					((Arbre) carte.get(a)).setBrulé(true);
 				}
 				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).size() !=0) {
-					System.out.println(""+testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).toString());
 					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).get(0));
-					System.out.println(""+a);
 					((Arbre) carte.get(a)).setBrulé(true);
 				}
 			}

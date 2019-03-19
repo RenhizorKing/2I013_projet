@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 
 import Mobs.Arbre;
 import Mobs.Braconnier;
@@ -48,6 +49,8 @@ public class SpriteDemo extends JPanel implements KeyListener{
 	private Image Chasseur;
 	public static int dx;
 	public static int dy;
+	public static int x;
+	public static int y;
 	private int spriteLength = 40;
 	private static int pas = 0;
 	private static int marcher = 0;
@@ -160,11 +163,11 @@ public class SpriteDemo extends JPanel implements KeyListener{
 
 		frame = new JFrame("World of Sprite");
 		frame.add(this);
-		//dx=645;
-		//dy=665;
-		frame.setSize(645,665);
+		x=dx*spriteLength;
+		y=dy*spriteLength;
+		frame.setSize(x,y+37);
 		frame.setVisible(true);
-		vitesse=20;
+		vitesse=30;
 		
 	}
 
@@ -291,12 +294,17 @@ public class SpriteDemo extends JPanel implements KeyListener{
 		if (source == 107) {
 			spriteLength+=10;
 			//this.getGraphics().clearRect(0, 0, this.getWidth()-10, this.getHeight()-10); 
-			frame.setSize(645,665);
+			//frame.getFocusCycleRootAncestor();
+			x=dx*spriteLength;
+			y=dy*spriteLength;
+			frame.setSize(x,y+37);
 			frame.setVisible(true);
 		}
 		if (source == 109) {
 			spriteLength-=10;
-			frame.setSize(645,665);
+			x=dx*spriteLength;
+			y=dy*spriteLength;
+			frame.setSize(x,y+37);
 			frame.setVisible(true);
 			//this.getGraphics().clearRect(0, 0, this.getWidth()-10, this.getHeight()-10); 
 		}
@@ -326,18 +334,18 @@ public class SpriteDemo extends JPanel implements KeyListener{
 				pas = 0;
 			}
 			if(cpt_pas % 8 == 0) {
-//				monde.pomme_pop(step);
-//				Pomme.duree();
-//				Pomme.delete();
+				monde.pomme_pop(step);
+				Pomme.duree();
+				Pomme.delete();
 				monde.Refresh();
 				cpt_pas = 0;
 				marcher = 0;
 				terrain.Stockage_passage();
 				Monde.grandir();
 				M.reproduction();
-				//monde.depart_feu();
-				//monde.propagation_F();
-				//monde.enfeu();
+				monde.depart_feu();
+				monde.propagation_F();
+				monde.enfeu();
 			}
 			marcher += 5 ;
 			//Braconnier.chasser();
