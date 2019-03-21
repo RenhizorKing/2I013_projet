@@ -382,7 +382,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	}
 	@Override
 	public void keyPressed(KeyEvent evmt) {
-		
+		System.out.println(""+(wx-a1)*spriteLength+" "+this.getBounds().width+" | "+a1*spriteLength);
 		int source =evmt.getKeyCode();
 		if (source == KeyEvent.VK_RIGHT) {
 			if (vitesse == 20)
@@ -413,20 +413,28 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			frame.setVisible(true);
 		}
 		if (source == KeyEvent.VK_Z) {
-			a2-=1;
-			wy-=1;
+			if (a2>0) {
+				a2-=1;
+				wy-=1;	
+			}
 		}
 		if (source == KeyEvent.VK_S) {
-			a2+=1;
-			wy+=1;
+			if ((wy-a2)*spriteLength > this.getBounds().height+(a2+1)*spriteLength) {
+				a2+=1;
+				wy+=1;				
+			}			
 		}
 		if (source == KeyEvent.VK_Q) {
-			a1-=1;
-			wx-=1;
+			if (a1>0) {
+				a1-=1;
+				wx-=1;
+			}
 		}
 		if (source == KeyEvent.VK_D) {
-			a1+=1;
-			wx+=1;
+			if ((wx-a1)*spriteLength > this.getBounds().width+(a1+1)*spriteLength) {
+				a1+=1;
+				wx+=1;				
+			}
 		}
 	}
 	
@@ -446,6 +454,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 		// TODO Auto-generated method stub
 		//e.getLocationOnScreen()
 		//System.out.println(""+(e.getLocationOnScreen().x-this.x) + " "+(e.getLocationOnScreen().y-this.getWidth()));
+		
 		if (e.getButton()==1) {
 			System.out.println(""+(e.getX())+ " "+(e.getY()));
 			System.out.println(""+(e.getX()/spriteLength)+ " "+(e.getY()/spriteLength));
@@ -504,16 +513,18 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	public void mouseWheelMoved(MouseWheelEvent e) {
         int notches = e.getWheelRotation();
         if (notches < 0) {
-             spriteLength+=1;
+             spriteLength+=1;  // scroll ver le haut 
         } else {
-             spriteLength-=1;
-        }
+           if (frame.getWidth()+10 <= spriteLength*dx || frame.getWidth()+10 <= spriteLength*dy) 
+        	   spriteLength-=1; // scroll ver le haut 
+          }
     } 
 	
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=100,dy=100,50);
+		Monde monde = new Monde(dx=10,dy=10,5);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
+		//System.exit(0);
         a.addKeyListener(a);
         a.addMouseListener(a);
         a.addMouseWheelListener(a);
