@@ -431,7 +431,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			}
 		}
 		if (source == KeyEvent.VK_D) {
-			if ((wx-a1)*spriteLength > this.getBounds().width+(a1+1)*spriteLength) {
+			if ((wx-a1)*spriteLength >= this.getBounds().width+(a1+1)*spriteLength) {
 				a1+=1;
 				wx+=1;				
 			}
