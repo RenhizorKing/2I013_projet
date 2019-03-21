@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import Mobs.Pomme;
 import Monde.Monde;
 import Monde.Terrain;
 
-public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
+public class SpriteDemo extends JPanel implements KeyListener,MouseListener,MouseWheelListener{
 
 
 	private JFrame frame;
@@ -60,6 +62,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 	private static int step;
 	private int a1;
 	private int a2;
+	private int wx;
+	private int wy;
 	public int vitesse;
 
 
@@ -250,16 +254,16 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 		vitesse=30;
 		a1=0;
 		a2=0;
+		wx=dx;
+		wy=dy;
 	}
 
 	public void paint(Graphics g)
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		for ( int i1 = a1 ; i1 < dx +a1 ; i1++ ) {
-			for ( int j1 = a2 ; j1 < dy +a2 ; j1++ ) {
-				int i=a1-a1;
-				int j=j1-a1;
+		for ( int i1 = a1 ; i1 < wx ; i1++ ) {
+			for ( int j1 = a2 ; j1 < wy ; j1++ ) {
 				try {
 					if (Terrain.getTerrain()[i1][j1] <=-15)
 						g2.drawImage(terreSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
@@ -284,8 +288,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 					
 				}
 		}
-		for ( int i = a1 ; i < dx +a1 ; i++ )
-			for ( int j = a2 ; j < dy +a2 ; j++ )
+		for ( int i = a1 ; i < wx ; i++ )
+			for ( int j = a2 ; j < wy ; j++ )
 			{
 				try {
 					ArrayList<Object> array_m=Monde.testC(i, j,Mobs.M1.class);
@@ -327,31 +331,9 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 								}
 							}
 						}
-							
-		
-							
-		
-					
-							
-					/*	if (Monde.testC(i, j) instanceof M2) {
-							if (((M2) Monde.testC(i, j)).getNb_evolution() == 0)
-								g2.drawImage(PokemonEau,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-							if (((M2) Monde.testC(i, j)).getNb_evolution() == 1)
-								g2.drawImage(PokemonEauEvolue,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-						}
-						if (Monde.testC(i, j) instanceof Arbre) {
-							g2.drawImage(tSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-						}
-						if (Monde.testC(i, j)instanceof Pomme) {
-							g2.drawImage(grassSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-							if ((((Pomme) Monde.testC(i, j)).isEstPourrie() == false))
-								g2.drawImage(Apple,spriteLength*i,spriteLength*j,spriteLength-10,spriteLength-10, frame);
-							if ((((Pomme) Monde.testC(i, j)).isEstPourrie() == true))
-								g2.drawImage(ApplePourri,spriteLength*i,spriteLength*j,spriteLength-10,spriteLength-10, frame);
-						}
-						if (Monde.testC(i, j) instanceof Braconnier)
-							g2.drawImage(Chasseur,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);*/
+						
 					}
+					
 					ArrayList<Object> array_m2=Monde.testC(i, j,Mobs.M2.class);
 					for (int m=0;m<array_m2.size();m++) {
 						if (array_m2.get(m) instanceof M2) {
@@ -417,8 +399,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 		}
 		if (source == 107) {
 			spriteLength+=10;
-			//this.getGraphics().clearRect(0, 0, this.getWidth()-10, this.getHeight()-10); 
-			//frame.getFocusCycleRootAncestor();
+
 			x=dx*spriteLength;
 			y=dy*spriteLength;
 			frame.setSize(x,y+37);
@@ -430,8 +411,23 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 			y=dy*spriteLength;
 			frame.setSize(x,y+37);
 			frame.setVisible(true);
-			//this.getGraphics().clearRect(0, 0, this.getWidth()-10, this.getHeight()-10); 
-		}		
+		}
+		if (source == KeyEvent.VK_Z) {
+			a2-=1;
+			wy-=1;
+		}
+		if (source == KeyEvent.VK_S) {
+			a2+=1;
+			wy+=1;
+		}
+		if (source == KeyEvent.VK_Q) {
+			a1-=1;
+			wx-=1;
+		}
+		if (source == KeyEvent.VK_D) {
+			a1+=1;
+			wx+=1;
+		}
 	}
 	
 	@Override
@@ -455,12 +451,13 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 			System.out.println(""+(e.getX()/spriteLength)+ " "+(e.getY()/spriteLength));
 			//System.out.println(""+((e.getX() - frame.getX())/spriteLength)+ " "+((e.getY() - frame.getY()-37))/spriteLength);
 			System.out.println("----------");
-			a1=(e.getX()/spriteLength);
-			a2=(e.getY()/spriteLength);
-			dx=a1+3;
-			dy=a2+3;
-			a1=Math.abs(a1-2);
-			a2=Math.abs(a2-2);
+			//a1=(e.getX()/spriteLength);
+			//a2=(e.getY()/spriteLength);
+			a1=Math.abs((e.getX()/spriteLength)-1);
+			a2=Math.abs((e.getY()/spriteLength)-1);
+			wx=a1+3;
+			wy=a2+3;
+			//spriteLength+=2;
 			//spriteLength+=10;
 			//spriteLength+=10;
 			//a1=2;
@@ -472,8 +469,9 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 			//spriteLength+=10;
 			a1=0;
 			a2=0;
-			dx=15;
-			dy=15;
+			wx=dx;
+			wy=dy;
+			//spriteLength=40;
 			//spriteLength-=10;
 			//System.exit(0);			
 		}
@@ -502,12 +500,23 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void mouseWheelMoved(MouseWheelEvent e) {
+        int notches = e.getWheelRotation();
+        if (notches < 0) {
+             spriteLength+=1;
+        } else {
+             spriteLength-=1;
+        }
+    } 
+	
 	public static void main(String[] args) {
 		Monde monde = new Monde(dx=15,dy=15,10);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
         a.addKeyListener(a);
         a.addMouseListener(a);
+        a.addMouseWheelListener(a);
         a.setFocusable(true);
 		//System.out.println(""+((M1) Monde.getCarte().get(0)).getSens());
 		//monde.detail();
