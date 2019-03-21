@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.Paint;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import Mobs.Pomme;
 import Monde.Monde;
 import Monde.Terrain;
 
-public class SpriteDemo extends JPanel implements KeyListener{
+public class SpriteDemo extends JPanel implements KeyListener,MouseListener{
 
 
 	private JFrame frame;
@@ -56,6 +58,8 @@ public class SpriteDemo extends JPanel implements KeyListener{
 	private static int marcher = 0;
 	private static int cpt_pas = 0;
 	private static int step;
+	private int a1;
+	private int a2;
 	public int vitesse;
 
 
@@ -66,7 +70,7 @@ public class SpriteDemo extends JPanel implements KeyListener{
 			waterSprite = ImageIO.read(new File("water.png"));
 			treeSprite = ImageIO.read(new File("arbref.png"));
 			grassSprite = ImageIO.read(new File("herbeP.png"));
-			tSprite = ImageIO.read(new File("tree.png"));
+			tSprite = ImageIO.read(new File("test1.png"));
 			terreSprite = ImageIO.read(new File("terre.png"));
 			PokemonFeu = ImageIO.read(new File("hericendre.png"));
 			PokemonFeuEvolue = ImageIO.read(new File("FeurissonTrans.png")); 
@@ -244,13 +248,18 @@ public class SpriteDemo extends JPanel implements KeyListener{
 		frame.setSize(x,y+37);
 		frame.setVisible(true);
 		vitesse=30;
+		a1=0;
+		a2=0;
 	}
 
 	public void paint(Graphics g)
 	{
+		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		for ( int i1 = 0 ; i1 < dx ; i1++ ) {
-			for ( int j1 = 0 ; j1 < dy ; j1++ ) {
+		for ( int i1 = a1 ; i1 < dx +a1 ; i1++ ) {
+			for ( int j1 = a2 ; j1 < dy +a2 ; j1++ ) {
+				int i=a1-a1;
+				int j=j1-a1;
 				try {
 					if (Terrain.getTerrain()[i1][j1] <=-15)
 						g2.drawImage(terreSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
@@ -275,8 +284,8 @@ public class SpriteDemo extends JPanel implements KeyListener{
 					
 				}
 		}
-		for ( int i = 0 ; i < dx ; i++ )
-			for ( int j = 0 ; j < dy ; j++ )
+		for ( int i = a1 ; i < dx +a1 ; i++ )
+			for ( int j = a2 ; j < dy +a2 ; j++ )
 			{
 				try {
 					ArrayList<Object> array_m=Monde.testC(i, j,Mobs.M1.class);
@@ -436,12 +445,70 @@ public class SpriteDemo extends JPanel implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		//e.getLocationOnScreen()
+		//System.out.println(""+(e.getLocationOnScreen().x-this.x) + " "+(e.getLocationOnScreen().y-this.getWidth()));
+		if (e.getButton()==1) {
+			System.out.println(""+(e.getX())+ " "+(e.getY()));
+			System.out.println(""+(e.getX()/spriteLength)+ " "+(e.getY()/spriteLength));
+			//System.out.println(""+((e.getX() - frame.getX())/spriteLength)+ " "+((e.getY() - frame.getY()-37))/spriteLength);
+			System.out.println("----------");
+			a1=(e.getX()/spriteLength);
+			a2=(e.getY()/spriteLength);
+			dx=a1+3;
+			dy=a2+3;
+			a1=Math.abs(a1-2);
+			a2=Math.abs(a2-2);
+			//spriteLength+=10;
+			//spriteLength+=10;
+			//a1=2;
+			//a2=2;
+			//System.exit(0);			
+		}
+		if (e.getButton()==3) {
+			System.out.println(""+(e.getX() - frame.getX())+ " "+(e.getY() - frame.getY()+27));
+			//spriteLength+=10;
+			a1=0;
+			a2=0;
+			dx=15;
+			dy=15;
+			//spriteLength-=10;
+			//System.exit(0);			
+		}
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=15,dy=15,15);
+		Monde monde = new Monde(dx=15,dy=15,10);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
-		a.setFocusable(true);
         a.addKeyListener(a);
+        a.addMouseListener(a);
+        a.setFocusable(true);
 		//System.out.println(""+((M1) Monde.getCarte().get(0)).getSens());
 		//monde.detail();
 		//System.exit(123);
