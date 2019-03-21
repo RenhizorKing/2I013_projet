@@ -262,25 +262,25 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		for ( int i1 = a1 ; i1 < wx ; i1++ ) {
-			for ( int j1 = a2 ; j1 < wy ; j1++ ) {
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
-					if (Terrain.getTerrain()[i1][j1] <=-15)
-						g2.drawImage(terreSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
+					if (Terrain.getTerrain()[i][j] <=-15)
+						g2.drawImage(terreSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 					else
-						g2.drawImage(grassSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
-					if (Monde.testC(i1, j1,Mobs.Arbre.class).size() ==1) {
-						if (((Arbre) Monde.testC(i1,j1,Mobs.Arbre.class).get(0)).isEnfeu())
-							g2.drawImage(treeSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
+						g2.drawImage(grassSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+					if (Monde.testC(i, j,Mobs.Arbre.class).size() ==1) {
+						if (((Arbre) Monde.testC(i,j,Mobs.Arbre.class).get(0)).isEnfeu())
+							g2.drawImage(treeSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 						else
-							g2.drawImage(tSprite,spriteLength*i1,spriteLength*j1,spriteLength,spriteLength, frame);
+							g2.drawImage(tSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 					}
 					
-					if (Monde.testC(i1, j1,Mobs.Pomme.class).size() !=0) {
-						if ((((Pomme) Monde.testC(i1, j1,Pomme.class).get(0)).isEstPourrie() == false))
-							g2.drawImage(Apple,spriteLength*i1,spriteLength*j1,spriteLength-10,spriteLength-10, frame);
-						if ((((Pomme) Monde.testC(i1, j1).get(0)).isEstPourrie() == true))
-							g2.drawImage(ApplePourri,spriteLength*i1,spriteLength*j1,spriteLength-10,spriteLength-10, frame);
+					if (Monde.testC(i, j,Mobs.Pomme.class).size() !=0) {
+						if ((((Pomme) Monde.testC(i, j,Pomme.class).get(0)).isEstPourrie() == false))
+							g2.drawImage(Apple,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength-10,spriteLength-10, frame);
+						if ((((Pomme) Monde.testC(i, j).get(0)).isEstPourrie() == true))
+							g2.drawImage(ApplePourri,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength-10,spriteLength-10, frame);
 					}
 					}catch(Exception e) {
 						
@@ -301,33 +301,33 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 							}
 							if(Hericendre.getEvolution() == false) {
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
-									g2.drawImage(PokemonFeuMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonFeuMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( Hericendre.getSens() == 1 ) { //va a droite
-									g2.drawImage(PokemonFeuMove[3][pas],spriteLength*i + SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonFeuMove[3][pas],spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( Hericendre.getSens() == 2 ) { //va en bas
-									g2.drawImage(PokemonFeuMove[0][pas],spriteLength*i ,spriteLength*j + SpriteDemo.marcher,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonFeuMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
 								if ( Hericendre.getSens() == 3 ) { //va en haut
-									g2.drawImage(PokemonFeuMove[1][pas],spriteLength*i ,spriteLength*j - SpriteDemo.marcher,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonFeuMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
 							}
 							if(Hericendre.getEvolution() == true) {
 								
 								Hericendre = (M1)(array_m.get(m));
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
-									g2.drawImage(PokemonFeuEvolueMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonFeuEvolueMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								
 								if ( Hericendre.getSens() == 1 ) { //va a droite
-									g2.drawImage(PokemonFeuEvolueMove[3][pas],spriteLength*i + SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonFeuEvolueMove[3][pas],spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( Hericendre.getSens() == 2 ) { //va en bas
-									g2.drawImage(PokemonFeuEvolueMove[0][pas],spriteLength*i ,spriteLength*j + SpriteDemo.marcher,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonFeuEvolueMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
 								if ( Hericendre.getSens() == 3 ) { //va en haut
-									g2.drawImage(PokemonFeuEvolueMove[1][pas],spriteLength*i ,spriteLength*j - SpriteDemo.marcher,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonFeuEvolueMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
 							}
 						}
@@ -343,33 +343,33 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 							}
 							if(Carapuce.getEvolution() == false) {
 								if ( Carapuce.getSens() == 0 ) { //va a gauche
-									g2.drawImage(PokemonEauMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonEauMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( Carapuce.getSens() == 1 ) { //va a droite
-									g2.drawImage(PokemonEauMove[3][pas],spriteLength*i + SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonEauMove[3][pas],spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( Carapuce.getSens() == 2 ) { //va en bas
-									g2.drawImage(PokemonEauMove[0][pas],spriteLength*i ,spriteLength*j + SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
+									g2.drawImage(PokemonEauMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
 								}
 								if ( Carapuce.getSens() == 3 ) { //va en haut
-									g2.drawImage(PokemonEauMove[1][pas],spriteLength*i ,spriteLength*j - SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
+									g2.drawImage(PokemonEauMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
 								}
 							}
 							if(Carapuce.getEvolution() == true) {
 								
 								Carapuce = (M2)(array_m2.get(m));
 								if ( Carapuce.getSens() == 0 ) { //va a gauche
-									g2.drawImage(PokemonEauEvolueMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonEauEvolueMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								
 								if ( Carapuce.getSens() == 1 ) { //va a droite
-									g2.drawImage(PokemonEauEvolueMove[3][pas],spriteLength*i + SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonEauEvolueMove[3][pas],spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( Carapuce.getSens() == 2 ) { //va en bas
-									g2.drawImage(PokemonEauEvolueMove[0][pas],spriteLength*i ,spriteLength*j + SpriteDemo.marcher,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonEauEvolueMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
 								if ( Carapuce.getSens() == 3 ) { //va en haut
-									g2.drawImage(PokemonEauEvolueMove[1][pas],spriteLength*i ,spriteLength*j - SpriteDemo.marcher,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonEauEvolueMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
 							}
 						}
@@ -511,7 +511,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
     } 
 	
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=15,dy=15,10);
+		Monde monde = new Monde(dx=100,dy=100,50);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
         a.addKeyListener(a);
