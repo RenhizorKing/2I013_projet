@@ -22,6 +22,7 @@ public abstract class M {
 	public M(int x, int y) {
 		this.x=x;
 		this.y=y;
+		this.sens=(int)(Math.random()*4);
 		id++;
 		step =0;
 		nb_pomme_manger = 0;
@@ -42,9 +43,9 @@ public abstract class M {
 		if(this.sens == 3) {
 			this.y=(this.y-1+dx)%dx;
 		}
-		for(int m=  0; m < Monde.getCarte().size();m++) {
-			if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
-				manger_pomme((Pomme) Monde.getCarte().get(m), Monde.getCarte());
+		for(int m=  0; m < Monde.getcarte_P().size();m++) {
+			if(Monde.getcarte_P().get(m) instanceof Pomme && ((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
+				//manger_pomme((Pomme) Monde.getcarte_P().get(m));
 			}
 			
 		}
@@ -100,10 +101,10 @@ public abstract class M {
 	}
 	
 	public static void reproduction() {
-		ArrayList<Object> carte = Monde.getCarte();
+		ArrayList<Object> carte = Monde.getcarte_Ag();
 		int taille = carte.size();
 		for (int i=0; i<taille; i++) {
-			if (carte.get(i) instanceof M && ((M) carte.get(i)).getStep() >20) {
+			if (((M) carte.get(i)).getStep() >20) {
 				for (int j=0;j<taille ;j++) {
 					if (!(carte.get(j).equals(carte.get(i))) && carte.get(j).getClass().equals(carte.get(i).getClass()) && ((M) carte.get(j)).getStep() >20 && ((M)carte.get(j)).getX() == ((M)carte.get(i)).getX() && ((M)carte.get(j)).getY() == ((M)carte.get(i)).getY() ) {
 						if (carte.get(i) instanceof M1) {
@@ -125,6 +126,7 @@ public abstract class M {
 			}
 		}
 	}
+	public abstract void setSens();
 	
 	
 }

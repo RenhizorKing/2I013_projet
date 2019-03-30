@@ -3,10 +3,40 @@ package Mobs;
 import java.util.ArrayList;
 
 import Monde.Monde;
+import Monde.Terrain;
 
 public class M1 extends M{
 	public M1(int x, int y) {
 		super(x, y);
+		int x1=this.x,y1=this.y;
+		if (this.sens == 0) {
+			x1=(x1-1+Monde.getDx())%Monde.getDx();
+			if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
+				this.sens=4;
+				return;
+			}
+		}
+		if (this.sens == 1) {
+			x1=(x1+1+Monde.getDx())%Monde.getDx();
+			if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
+				this.sens=5;
+				return;
+			}
+		}
+		if (this.sens == 2) {
+			y1=(y1+1+Monde.getDy())%Monde.getDy();
+			if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
+				this.sens=6;
+				return;
+			}
+		}
+		if (this.sens == 3) {
+			y1=(y1-1+Monde.getDy())%Monde.getDy();
+			if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
+				this.sens=7;
+				return;
+			}
+		}
 		atk=(int) (Math.random()*100);
 		pv=500;
 		S="X";
@@ -29,9 +59,9 @@ public class M1 extends M{
 		if (this.sens == 3) {
 			this.y=(this.y-1+dy)%dy;
 		}
-		for (int m=  0; m < Monde.getCarte().size();m++) {
-			if (Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
-				manger_pomme((Pomme) Monde.getCarte().get(m), Monde.getCarte());
+		for (int m=  0; m < Monde.getcarte_P().size();m++) {
+			if (Monde.getcarte_P().get(m) instanceof Pomme && ((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
+				manger_pomme((Pomme) Monde.getcarte_P().get(m));
 			}
 		}
 		
@@ -42,79 +72,92 @@ public class M1 extends M{
 			evolution =true;
 		}
 	}
-	public void manger_pomme(Pomme apple , ArrayList<Object> monde) {
-		for(int i = 0; i < monde.size(); i++) {
-				if(monde.get(i).equals(apple)){
+	public void manger_pomme(Pomme apple) {
+		for(int i = 0; i < Monde.getcarte_P().size(); i++) {
+				if(Monde.getcarte_P().get(i).equals(apple)){
 					if (apple.isEstPourrie()) 
 						nb_pomme_manger += 1 ;
 					else 
 						nb_pomme_manger += 2 ;
-					monde.remove(i);
+					Monde.getcarte_P().remove(i);
 					evoluer();
 					return ;
 			}
 		}
 	}
 	public void setSens() {
-		if (Monde.testC((this.x-1+Monde.getDx())%Monde.getDx(), this.y, Mobs.Arbre.class).size() != 0 && 
-				Monde.testC((this.x+1+Monde.getDx())%Monde.getDx(), this.y, Mobs.Arbre.class).size() != 0
-				&& Monde.testC(this.x, (this.y-1+Monde.getDy())%Monde.getDy(), Mobs.Arbre.class).size() != 0
-				&& Monde.testC(this.x, (this.y+1+Monde.getDy())%Monde.getDy(), Mobs.Arbre.class).size() != 0) {
-			
-			((Arbre) Monde.testC((this.x-1+Monde.getDx())%Monde.getDx(), this.y,Mobs.Arbre.class).get(0)).setEnfeu(true);
-			((Arbre) Monde.testC((this.x+1+Monde.getDx())%Monde.getDx(), this.y,Mobs.Arbre.class).get(0)).setEnfeu(true);
-			((Arbre) Monde.testC(this.x, (this.y-1+Monde.getDy())%Monde.getDy(),Mobs.Arbre.class).get(0)).setEnfeu(true);
-			((Arbre) Monde.testC(this.x, (this.y+1+Monde.getDy())%Monde.getDy(),Mobs.Arbre.class).get(0)).setEnfeu(true);
-			Monde.getCarte().remove(this);
-			return ;
-		}
-		
-		for(int m=  0; m < Monde.getCarte().size();m++) {
-			if((Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1)) {
-				
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
+		for(int m=  0; m < Monde.getcarte_P().size();m++) {
+			if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x-1 && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
 					this.sens = 0;
 					return ;
 				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
+				if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x+1 && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
 					this.sens = 1;
 					return ;
 				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) {
+				if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y+1) {
 					this.sens = 2;
 					return ;
 				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1) {
+				if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y-1) {
 					this.sens = 3;
 					return ;
 				}
-			}
+			
+		}
+		if ((Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][2] == 1 || Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][1] <= 10) 
+				&& (Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][2] == 1 || Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][1] <= 10)
+				&& (Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][2] == 1 || Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][1] <= 10) 
+				&& (Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][2] == 1 || Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][1] <= 10)) 
+		{
+			Monde.getcarte_Ag().remove(this);
+			return;
 		}
 		int x1,y1;
+		boolean boolA=false;
 		do {
-			this.sens = (int)(Math.random()*4);
+			boolA=false;
 			x1=this.x;
 			y1=this.y;
+			this.sens = (int)(Math.random()*4);
 			if (this.sens == 0) {
 				x1=(x1-1+Monde.getDx())%Monde.getDx();
+				if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
+					this.sens=4;
+					return;
+				}
 			}
 			if (this.sens == 1) {
 				x1=(x1+1+Monde.getDx())%Monde.getDx();
+				if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
+					this.sens=5;
+					return;
+				}
 			}
 			if (this.sens == 2) {
 				y1=(y1+1+Monde.getDy())%Monde.getDy();
+				if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
+					this.sens=6;
+					return;
+				}
 			}
 			if (this.sens == 3) {
 				y1=(y1-1+Monde.getDy())%Monde.getDy();
+				if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
+					this.sens=7;
+					return;
+				}
 			}
-		}while(Monde.testC(x1, y1,Mobs.Arbre.class).size() ==1);
-}
+			for (int i=0;i<Monde.getcarte_Ab().size();i++) {
+				if ((Monde.getcarte_Ab().get(i).getX() == x1 && Monde.getcarte_Ab().get(i).getY() == y1)) {
+					boolA=true;
+					break;
+				}
+			}
+		}while (boolA);
+	}
 	
 	public int getSens() {
 		return this.sens;
 	}
-	
 }

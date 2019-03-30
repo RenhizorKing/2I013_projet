@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -37,52 +38,69 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	
 	private Image waterSprite;
 	private Image grassSprite;
-	private Image treeSprite;
+	private Image grassSpriteH;
+	private Image grassSpriteA;
 	private Image tSprite;
+	private Image tSpriteH;
+	private Image tSpriteA;
+	private Image arbrecrame;
 	private Image terreSprite;
-	private Image PokemonFeu;
 	private Image[][] PokemonFeuMove;
 	private Image[][] PokemonFeuEvolueMove;
-	private Image PokemonFeuEvolue;
-	private Image PokemonEau;
 	private Image[][] PokemonEauMove;
 	private Image[][] PokemonEauEvolueMove;
-	private Image PokemonEauEvolue;
 	private Image Apple;
 	private Image ApplePourri;
 	private Image Chasseur;
+	private Image Flamme;
+	private Image rochevolcan;
+	private Image Lave;
+	private Image pluie;
+	private Image pluieF;
+	private Image nuitF;
+	private Image soleilF;
 	public static int dx;
 	public static int dy;
 	private int x;
 	private int y;
-	private int spriteLength = 40;
+	private static int spriteLength = 40;
 	private static int pas = 0;
 	private static int marcher = 0;
 	private static int cpt_pas = 0;
 	private static int step;
+	private static int cycle_volcan=0;
 	private int a1;
 	private int a2;
 	private int wx;
 	private int wy;
 	public int vitesse;
+	private boolean duree;
 
 
 	public SpriteDemo()
 	{
+		duree=false;
 		try
 		{
 			waterSprite = ImageIO.read(new File("water.png"));
-			treeSprite = ImageIO.read(new File("arbref.png"));
 			grassSprite = ImageIO.read(new File("herbeP.png"));
+			grassSpriteH = ImageIO.read(new File("herbePN.png"));
+			grassSpriteA = ImageIO.read(new File("herbePA.png"));
 			tSprite = ImageIO.read(new File("test1.png"));
+			tSpriteH = ImageIO.read(new File("test1N.png"));
+			tSpriteA = ImageIO.read(new File("test1A.png"));
+			arbrecrame = ImageIO.read(new File("test1crame.png"));
 			terreSprite = ImageIO.read(new File("terre.png"));
-			PokemonFeu = ImageIO.read(new File("hericendre.png"));
-			PokemonFeuEvolue = ImageIO.read(new File("FeurissonTrans.png")); 
-			PokemonEau = ImageIO.read(new File("carapuce.png"));
-			PokemonEauEvolue = ImageIO.read(new File("CarabaffeTrans.png")); 
 			Apple = ImageIO.read(new File("pomme.png"));
 			ApplePourri = ImageIO.read(new File("pommeP.png"));
 			Chasseur = ImageIO.read(new File("chasseur.png"));
+			Flamme = Toolkit.getDefaultToolkit().createImage("Flamme.gif");
+			rochevolcan = ImageIO.read(new File("roche1.png"));
+			Lave = ImageIO.read(new File("lava.png"));
+			pluie = Toolkit.getDefaultToolkit().createImage("Pluie.gif");
+			pluieF=ImageIO.read(new File("PluiF.png"));
+			nuitF=ImageIO.read(new File("NuitF.png"));
+			soleilF=ImageIO.read(new File("SoleilF.png"));
 			
 			PokemonFeuMove = new Image[4][8]; //Hericendre
 			PokemonFeuMove[0][0] = ImageIO.read(new File("Hericendre_walkdown1.png"));
@@ -264,41 +282,92 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 		Graphics2D g2 = (Graphics2D)g;
 		for ( int i = a1 ; i < wx ; i++ ) {
 			for ( int j = a2 ; j < wy ; j++ ) {
-				try {
-					if (Terrain.getTerrain()[i][j] <=-15)
-						g2.drawImage(terreSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-					else
+					try{
 						g2.drawImage(grassSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-					if (Monde.testC(i, j,Mobs.Arbre.class).size() ==1) {
-						if (((Arbre) Monde.testC(i,j,Mobs.Arbre.class).get(0)).isEnfeu())
-							g2.drawImage(treeSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-						else
-							g2.drawImage(tSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+					if (Terrain.getTerrain()[i][j][1] >= (Terrain.getTerre() - 2) && Terrain.getTerrain()[i][j][1] <= (Terrain.getTerre()+2))
+						g2.drawImage(terreSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+					if (Terrain.getTerrain()[i][j][1] < Terrain.getEau())
+						g2.drawImage(waterSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+					for (int a=0;a<Monde.getcarte_Ab().size();a++) {
+						if (Monde.getcarte_Ab().get(a).getX()==i && Monde.getcarte_Ab().get(a).getY()==j) {
+							if (Monde.getcarte_Ab().get(a).isEnfeu()) {
+								g2.drawImage(arbrecrame,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								g2.drawImage(Flamme,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+							}
+							else {
+								if (Monde.getcarte_Ab().get(a).getGrille()) {
+									g2.drawImage(arbrecrame,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}else {
+									g2.drawImage(tSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+							}
+						}
+												}
+					if (Terrain.getTerrain()[i][j][0] >= Terrain.contourRoche() && Terrain.getTerrain()[i][j][0] < Terrain.sommetVolcan()) {
+						if(Terrain.getTerrain()[i][j][0] < (Terrain.sommetVolcan()-7)) {
+							if(Terrain.getTerrain()[i][j][0] == Terrain.contourRoche()) {
+								g2.drawImage(rochevolcan,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+							}
+							else {
+								g2.drawImage(rochevolcan,spriteLength*(i-a1)-25,spriteLength*(j-a2)-10,spriteLength+25,spriteLength+10, frame);
+							}
+						}else {
+							g2.drawImage(rochevolcan,spriteLength*(i-a1)-10,spriteLength*(j-a2)-25,spriteLength+10,spriteLength+25, frame);
+						}
 					}
-					
-					if (Monde.testC(i, j,Mobs.Pomme.class).size() !=0) {
-						if ((((Pomme) Monde.testC(i, j,Pomme.class).get(0)).isEstPourrie() == false))
-							g2.drawImage(Apple,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength-10,spriteLength-10, frame);
-						if ((((Pomme) Monde.testC(i, j).get(0)).isEstPourrie() == true))
-							g2.drawImage(ApplePourri,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength-10,spriteLength-10, frame);
-					}
-					}catch(Exception e) {
+					}catch(Exception E) {
 						
 					}
-					
-				}
+					for (int p=0;p<Monde.getcarte_P().size();p++) {
+						try{
+						if (Monde.getcarte_P().get(p).getX()==i && Monde.getcarte_P().get(p).getY()==j) {
+							if (Monde.getcarte_P().get(p).isEstPourrie() == false)
+								g2.drawImage(Apple,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength-10,spriteLength-10, frame);
+							if (Monde.getcarte_P().get(p).isEstPourrie() == true)
+								g2.drawImage(ApplePourri,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength-10,spriteLength-10, frame);		
+						}}catch(Exception E) {
+							
+						}
+					}
+			}
 		}
-		for ( int i = a1 ; i < wx ; i++ )
-			for ( int j = a2 ; j < wy ; j++ )
-			{
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
-					ArrayList<Object> array_m=Monde.testC(i, j,Mobs.M1.class);
+					if(Terrain.getTerrain()[i][j][0] >= (Terrain.contourRoche() + 3) && Terrain.getTerrain()[i][j][0] < (Terrain.sommetVolcan() - 2)) {
+						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
+					}
+					
+				}catch(Exception e) {}
+			}
+		}
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ) {
+				try {
+					if(Terrain.getTerrain()[i][j][0] >= (Terrain.contourRoche() + 7) && Terrain.getTerrain()[i][j][0] <= (Terrain.sommetVolcan() - 1)) {
+						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
+					}
+					
+				}catch(Exception e) {}
+			}
+		}
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ) {
+				try {
+					if(Terrain.getTerrain()[i][j][1] == Terrain.SolLave()) {
+						g2.drawImage(Lave,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
+					}
+					
+				}catch(Exception e) {}
+			}
+		}
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ){
+					ArrayList<Object> array_m=Monde.getcarte_Ag();
 					for (int m=0;m<array_m.size();m++) {
-						if (array_m.get(m) instanceof M1) {
+						if (array_m.get(m) instanceof M1 && ((M1)array_m.get(m)).getX()==i && ((M1)array_m.get(m)).getY()==j) {
 							M1 Hericendre = (M1)(array_m.get(m));
-							if(cpt_pas % 8 == 0) {
-								Hericendre.setSens();
-							}
+							
 							if(Hericendre.getEvolution() == false) {
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonFeuMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
@@ -312,10 +381,21 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 								if ( Hericendre.getSens() == 3 ) { //va en haut
 									g2.drawImage(PokemonFeuMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
+								if ( Hericendre.getSens() == 4 ) { //reste sur place
+									g2.drawImage(PokemonFeuMove[2][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 5 ) { //reste sur place
+									g2.drawImage(PokemonFeuMove[3][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 6 ) { //reste sur place
+									g2.drawImage(PokemonFeuMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 7 ) { //reste sur place
+									g2.drawImage(PokemonFeuMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
 							}
 							if(Hericendre.getEvolution() == true) {
 								
-								Hericendre = (M1)(array_m.get(m));
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonFeuEvolueMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
@@ -329,18 +409,25 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 								if ( Hericendre.getSens() == 3 ) { //va en haut
 									g2.drawImage(PokemonFeuEvolueMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
+								if ( Hericendre.getSens() == 4 ) { //reste sur place
+									g2.drawImage(PokemonFeuEvolueMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) ,spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 5 ) { //reste sur place
+									g2.drawImage(PokemonFeuEvolueMove[3][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 6 ) { //reste sur place
+									g2.drawImage(PokemonFeuEvolueMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 7 ) { //reste sur place
+									g2.drawImage(PokemonFeuEvolueMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
 							}
+							continue;
 						}
-						
-					}
-					
-					ArrayList<Object> array_m2=Monde.testC(i, j,Mobs.M2.class);
-					for (int m=0;m<array_m2.size();m++) {
-						if (array_m2.get(m) instanceof M2) {
-							M2 Carapuce = (M2)(array_m2.get(m));
-							if(cpt_pas % 8 == 0) {
-								Carapuce.setSens();
-							}
+
+						if (array_m.get(m) instanceof M2 && ((M2)array_m.get(m)).getX()==i && ((M2)array_m.get(m)).getY()==j) {
+							M2 Carapuce = (M2)(array_m.get(m));
+							
 							if(Carapuce.getEvolution() == false) {
 								if ( Carapuce.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonEauMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
@@ -349,15 +436,13 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 									g2.drawImage(PokemonEauMove[3][pas],spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( Carapuce.getSens() == 2 ) { //va en bas
-									g2.drawImage(PokemonEauMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
+									g2.drawImage(PokemonEauMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
 								}
 								if ( Carapuce.getSens() == 3 ) { //va en haut
-									g2.drawImage(PokemonEauMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
+									g2.drawImage(PokemonEauMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
 								}
 							}
 							if(Carapuce.getEvolution() == true) {
-								
-								Carapuce = (M2)(array_m2.get(m));
 								if ( Carapuce.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonEauEvolueMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
@@ -372,17 +457,34 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 									g2.drawImage(PokemonEauEvolueMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
 							}
+							continue;
 						}
+						if (array_m.get(m) instanceof Braconnier && ((Braconnier)array_m.get(m)).getX()==i && ((Braconnier)array_m.get(m)).getY()==j) {
+							Braconnier braconnier = (Braconnier)(array_m.get(m));
+							
+								if ( braconnier.getSens() == 0 ) { //va a gauche
+									g2.drawImage(Chasseur,spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( braconnier.getSens() == 1 ) { //va a droite
+									g2.drawImage(Chasseur,spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( braconnier.getSens() == 2 ) { //va en bas
+									g2.drawImage(Chasseur,spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
+								}
+								if ( braconnier.getSens() == 3 ) { //va en haut
+									g2.drawImage(Chasseur,spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
+								}
+							continue;
+						}
+					
+						
 					}
-				}catch(Exception E) {
-					E.printStackTrace();
-				}
-				
 			}
+		}
 	}
 	@Override
 	public void keyPressed(KeyEvent evmt) {
-		System.out.println(""+(wx-a1)*spriteLength+" "+this.getBounds().width+" | "+a1*spriteLength);
+		//System.out.println(""+(wx-a1)*spriteLength+" "+this.getBounds().width+" | "+a1*spriteLength);
 		int source =evmt.getKeyCode();
 		if (source == KeyEvent.VK_RIGHT) {
 			if (vitesse == 20)
@@ -436,7 +538,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				wx+=1;				
 			}
 		}
-	}
+}						
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -521,9 +623,9 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
     } 
 	
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=10,dy=10,5);
+		Terrain terrain= new Terrain(dx=100,dy=100);
+		Monde monde = new Monde(dx,dy,0.01,0.5);
 		SpriteDemo a =new SpriteDemo();
-		Terrain terrain= new Terrain(dx,dy);
 		//System.exit(0);
         a.addKeyListener(a);
         a.addMouseListener(a);
@@ -545,23 +647,29 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				pas = 0;
 			}
 			if(cpt_pas % 8 == 0) {
+				cycle_volcan++;
 				monde.pomme_pop(step);
 				Pomme.duree();
 				Pomme.delete();
 				monde.Refresh();
 				cpt_pas = 0;
 				marcher = 0;
-				terrain.Stockage_passage();
+			//	terrain.Stockage_passage();
 				Monde.grandir();
-				//M.reproduction();
+			//	M.reproduction();
+				if(cycle_volcan % 100 == 0) {
+					terrain.partir_lave();
+				}
+				terrain.propagation_lave();
+				terrain.eruption();
+				monde.arbreMourir();
 				monde.depart_feu();
 				monde.propagation_F();
 				monde.enfeu();
 			}
-			marcher += 5 ;
-			//Braconnier.chasser();
+			marcher += (int)(spriteLength/8);
 			try{
-				Thread.sleep(a.vitesse); // en ms
+			Thread.sleep(a.vitesse); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}

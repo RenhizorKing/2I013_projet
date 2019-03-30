@@ -18,89 +18,99 @@ public class M2 extends M{
 	}
 	
 	public void move(int dx, int dy) {
-		
-	if(this.sens == 0) {
-		this.x=(this.x-1+dx)%dx;
-	}
-	if(this.sens == 1) {
-		this.x=(this.x+1+dx)%dx;
-	}
-	if(this.sens == 2) {
-		this.y=(this.y+1+dx)%dx;
-	}
-	if(this.sens == 3) {
-		this.y=(this.y-1+dx)%dx;
-	}
-	for(int m=  0; m < Monde.getCarte().size();m++) {
-		if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
-			manger_pomme((Pomme) Monde.getCarte().get(m), Monde.getCarte());
+		if (this.sens == 0) {
+			this.x=(this.x-1+dx)%dx;
+		}
+		if (this.sens == 1) {
+			this.x=(this.x+1+dx)%dx;
+		}
+		if (this.sens == 2) {
+			this.y=(this.y+1+dy)%dy;
+		}
+		if (this.sens == 3) {
+			this.y=(this.y-1+dy)%dy;
+		}
+		for (int m=  0; m < Monde.getcarte_P().size();m++) {
+			if (Monde.getcarte_P().get(m) instanceof Pomme && ((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
+				manger_pomme((Pomme) Monde.getcarte_P().get(m));
+			}
 		}
 		
 	}
-		
-		}
 	
 	public void evoluer() {
 		if(nb_pomme_manger >= 30 && evolution == false) {
 			evolution = true;
 		}
 	}
-	public void manger_pomme(Pomme apple , ArrayList<Object> monde) {
-		for(int i = 0; i < monde.size(); i++) {
-				if(monde.get(i).equals(apple)){
+	public void manger_pomme(Pomme apple) {
+		for(int i = 0; i < Monde.getcarte_P().size(); i++) {
+				if(Monde.getcarte_P().get(i).equals(apple)){
 					if (apple.isEstPourrie()) 
 						nb_pomme_manger += 1 ;
 					else 
 						nb_pomme_manger += 2 ;
-					monde.remove(i);
+					Monde.getcarte_P().remove(i);
 					evoluer();
 					return ;
 			}
 		}
 	}
 	public void setSens() {
-		if (Monde.testC((this.x-1+Monde.getDx())%Monde.getDx(), this.y, Mobs.Arbre.class).size() != 0 && 
-				Monde.testC((this.x+1+Monde.getDx())%Monde.getDx(), this.y, Mobs.Arbre.class).size() != 0
-				&& Monde.testC(this.x, (this.y-1+Monde.getDy())%Monde.getDy(), Mobs.Arbre.class).size() != 0
-				&& Monde.testC(this.x, (this.y+1+Monde.getDy())%Monde.getDy(), Mobs.Arbre.class).size() != 0) {
+		int cpt=0;
+		int tab_A[] = new int[4];
+		for (int i=0;i<Monde.getcarte_Ab().size();i++) {
 			
-			((Arbre) Monde.testC((this.x-1+Monde.getDx())%Monde.getDx(), this.y,Mobs.Arbre.class).get(0)).setEnfeu(true);
-			((Arbre) Monde.testC((this.x+1+Monde.getDx())%Monde.getDx(), this.y,Mobs.Arbre.class).get(0)).setEnfeu(true);
-			((Arbre) Monde.testC(this.x, (this.y-1+Monde.getDy())%Monde.getDy(),Mobs.Arbre.class).get(0)).setEnfeu(true);
-			((Arbre) Monde.testC(this.x, (this.y+1+Monde.getDy())%Monde.getDy(),Mobs.Arbre.class).get(0)).setEnfeu(true);
-			Monde.getCarte().remove(this);
+			if (Monde.getcarte_Ab().get(i).getX()==this.x-1 && Monde.getcarte_Ab().get(i).getY()==this.y) {
+				tab_A[0]=i;
+				cpt+=1;
+			}
+			if (Monde.getcarte_Ab().get(i).getX()==this.x+1 && Monde.getcarte_Ab().get(i).getY()==this.y) {
+				tab_A[1]=i;
+				cpt+=1;
+			}
+			if (Monde.getcarte_Ab().get(i).getX()==this.x && Monde.getcarte_Ab().get(i).getY()==this.y+1) {
+				tab_A[2]=i;
+				cpt+=1;
+			}
+			if (Monde.getcarte_Ab().get(i).getX()==this.x && Monde.getcarte_Ab().get(i).getY()==this.y-1) {
+				tab_A[3]=i;
+				cpt+=1;
+			}
+		}
+		if (cpt == 4) {
+			Monde.getcarte_Ag().remove(this);
+			System.out.println("R");
+			System.out.println(""+Monde.getcarte_Ag().size());
 			return ;
 		}
 		
-		for(int m=  0; m < Monde.getCarte().size();m++) {
-			if((Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) ||
-					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1)) {
-				
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
+		for(int m=  0; m < Monde.getcarte_P().size();m++) {
+			if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x-1 && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
 					this.sens = 0;
 					return ;
 				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
+				if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x+1 && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
 					this.sens = 1;
 					return ;
 				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) {
+				if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y+1) {
 					this.sens = 2;
 					return ;
 				}
-				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1) {
+				if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y-1) {
 					this.sens = 3;
 					return ;
 				}
-			}
+			
 		}
 		int x1,y1;
+		boolean boolA=false;
 		do {
-			this.sens = (int)(Math.random()*4);
+			boolA=false;
 			x1=this.x;
 			y1=this.y;
+			this.sens = (int)(Math.random()*4);
 			if (this.sens == 0) {
 				x1=(x1-1+Monde.getDx())%Monde.getDx();
 			}
@@ -113,8 +123,15 @@ public class M2 extends M{
 			if (this.sens == 3) {
 				y1=(y1-1+Monde.getDy())%Monde.getDy();
 			}
-		}while(Monde.testC(x1, y1,Mobs.Arbre.class).size() ==1);
-}
+			for (int i=0;i<Monde.getcarte_Ab().size();i++) {
+				if (Monde.getcarte_Ab().get(i).getX() == x1 && Monde.getcarte_Ab().get(i).getY() == y1) {
+					boolA=true;
+					break;
+				}
+			}
+		}while (boolA);
+	}
+	
 	public int getSens() {
 		return this.sens;
 	}
