@@ -18,16 +18,16 @@ public class Braconnier {
 		return y;
 	}
 	public void move(int dx, int dy) {
-		int x1,x2;
-		for (int i=0;i<Monde.getcarte_Ag().size();i++) {
-			if (Monde.getcarte_Ag().get(i) instanceof M) { //&& Utilitaire.distance2O(((M) Monde.getCarte().get(i)),this)<=1) {
-				if (Math.random() <=1.0) {
-					x=((M)Monde.getcarte_Ag().get(i)).getX();
-					y=((M)Monde.getcarte_Ag().get(i)).getY();
-					return ;
-				}
-			}
-		}
+//		int x1,x2;
+//		for (int i=0;i<Monde.getcarte_Ag().size();i++) {
+//			if (Monde.getcarte_Ag().get(i) instanceof M) { //&& Utilitaire.distance2O(((M) Monde.getCarte().get(i)),this)<=1) {
+//				if (Math.random() <=1.0) {
+//					x=((M)Monde.getcarte_Ag().get(i)).getX();
+//					y=((M)Monde.getcarte_Ag().get(i)).getY();
+//					return ;
+//				}
+//			}
+//		}
 		if (this.sens == 0) {
 			this.x=(this.x-1+dx)%dx;
 		}
@@ -50,43 +50,40 @@ public class Braconnier {
 				int delta_x=this.x-((M) Monde.getcarte_Ag().get(i)).getX();
 				int delta_y=this.y-((M) Monde.getcarte_Ag().get(i)).getY();
 				double delta=Math.sqrt(delta_x*delta_x+delta_y*delta_y);
-				if (i==0) {
-					d=delta;
-				}else {
-					if (delta<d) {
-						if (delta_x<0 && delta_y>0) {
-							if (Math.abs(delta_x)>=Math.abs(delta_y)) {
-								this.sens=1;
-							}else {
-								this.sens=3;
-							}
-						}
-						if (delta_x>0 && delta_y<0) {
-							if (Math.abs(delta_x)>=Math.abs(delta_y)) {
-								this.sens=0;
-							}else {
-								this.sens=2;
-							}
-						}
-						if (delta_x<0 && delta_y<0) {
-							if (Math.abs(delta_x)>=Math.abs(delta_y)) {
-								this.sens=1;
-							}else {
-								this.sens=2;
-							}
-						}
-						if (delta_x>0 && delta_y>0) {
-							if (Math.abs(delta_x)>=Math.abs(delta_y)) {
-								this.sens=0;
-							}else {
-								this.sens=3;
-							}
+				if (i==1) {
+					if (delta_x<0 && delta_y>0) {
+						if (Math.abs(delta_x)>=Math.abs(delta_y)) {
+							this.sens=1;
+						}else {
+							this.sens=3;
 						}
 					}
-				}
+					if (delta_x>0 && delta_y<0) {
+						if (Math.abs(delta_x)>=Math.abs(delta_y)) {
+							this.sens=0;
+						}else {
+							this.sens=2;
+						}
+					}
+					if (delta_x<0 && delta_y<0) {
+						if (Math.abs(delta_x)>=Math.abs(delta_y)) {
+							this.sens=1;
+						}else {
+							this.sens=2;
+						}
+					}
+					if (delta_x>0 && delta_y>0) {
+						if (Math.abs(delta_x)>=Math.abs(delta_y)) {
+							this.sens=0;
+						}else {
+							this.sens=3;
+						}
+					}
+				}			
 			}
 		}
 	}
+	
 	public int getSens() {
 		return this.sens;
 	}

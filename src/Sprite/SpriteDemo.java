@@ -36,29 +36,6 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 
 	private JFrame frame;
 	
-	private Image waterSprite;
-	private Image grassSprite;
-	private Image grassSpriteH;
-	private Image grassSpriteA;
-	private Image tSprite;
-	private Image tSpriteH;
-	private Image tSpriteA;
-	private Image arbrecrame;
-	private Image terreSprite;
-	private Image[][] PokemonFeuMove;
-	private Image[][] PokemonFeuEvolueMove;
-	private Image[][] PokemonEauMove;
-	private Image[][] PokemonEauEvolueMove;
-	private Image Apple;
-	private Image ApplePourri;
-	private Image Chasseur;
-	private Image Flamme;
-	private Image rochevolcan;
-	private Image Lave;
-	private Image pluie;
-	private Image pluieF;
-	private Image nuitF;
-	private Image soleilF;
 	public static int dx;
 	public static int dy;
 	private int x;
@@ -69,11 +46,41 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	private static int cpt_pas = 0;
 	private static int step;
 	private static int cycle_volcan=0;
+	private static int cycle_pluie=0;
 	private int a1;
 	private int a2;
 	private int wx;
 	private int wy;
+	private Image waterSprite;
+	private Image grassSprite;
+	private Image treeSprite;
+	private Image tSprite;
+	private Image arbrecrame;
+	private Image terreSprite;
+	private Image PokemonFeu;
+	private Image[][] PokemonFeuMove;
+	private Image[][] PokemonFeuEvolueMove;
+	private Image PokemonFeuEvolue;
+	private Image PokemonEau;
+	private Image[][] PokemonEauMove;
+	private Image[][] PokemonEauEvolueMove;
+	private Image PokemonEauEvolue;
+	private Image Apple;
+	private Image ApplePourri;
+	private Image Chasseur;
+	
+	private Image Flamme;
+	private Image rochevolcan;
+	private Image Lave;
+	private Image pluie;
 	public int vitesse;
+	private Image grassSpriteH;
+	private Image grassSpriteA;
+	private Image tSpriteH;
+	private Image tSpriteA;
+	private Image pluieF;
+	private Image nuitF;
+	private Image soleilF;
 	private int jour;
 	private long time_init;
 	private long laps;
@@ -85,6 +92,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 		try
 		{
 			waterSprite = ImageIO.read(new File("water.png"));
+			treeSprite = ImageIO.read(new File("arbref.png"));
 			grassSprite = ImageIO.read(new File("herbeP.png"));
 			grassSpriteH = ImageIO.read(new File("herbePN.png"));
 			grassSpriteA = ImageIO.read(new File("herbePA.png"));
@@ -93,6 +101,10 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			tSpriteA = ImageIO.read(new File("test1A.png"));
 			arbrecrame = ImageIO.read(new File("test1crame.png"));
 			terreSprite = ImageIO.read(new File("terre.png"));
+			PokemonFeu = ImageIO.read(new File("hericendre.png"));
+			PokemonFeuEvolue = ImageIO.read(new File("FeurissonTrans.png")); 
+			PokemonEau = ImageIO.read(new File("carapuce.png"));
+			PokemonEauEvolue = ImageIO.read(new File("CarabaffeTrans.png")); 
 			Apple = ImageIO.read(new File("pomme.png"));
 			ApplePourri = ImageIO.read(new File("pommeP.png"));
 			Chasseur = ImageIO.read(new File("chasseur.png"));
@@ -100,7 +112,6 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			rochevolcan = ImageIO.read(new File("roche1.png"));
 			Lave = ImageIO.read(new File("lava.png"));
 			pluie = Toolkit.getDefaultToolkit().createImage("Pluie.gif");
-			pluieF=ImageIO.read(new File("PluiF.png"));
 			nuitF=ImageIO.read(new File("NuitF.png"));
 			soleilF=ImageIO.read(new File("SoleilF.png"));
 			time_init= (System.nanoTime()/1000000000);
@@ -316,7 +327,6 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 										g2.drawImage(tSpriteA,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 									if (jour%12>=9)
 										g2.drawImage(tSpriteH,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-
 								}
 							}
 						}
@@ -499,6 +509,14 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 					}
 			}
 		}
+		if(Terrain.getPluie()) {
+			for ( int i = 0 ; i < wx ; i+=5) {
+				for ( int j = 0 ; j < wy ; j+=5 ) {
+					g2.drawImage(pluie,spriteLength*i,spriteLength*j,spriteLength*10,spriteLength*10, frame);
+				}
+			}
+		}
+		
 		if (jour%12 >=3 && jour%12<6)
 			g2.drawImage(soleilF,0,0,spriteLength*wx,spriteLength*wy, frame);
 		
@@ -677,7 +695,11 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				pas = 0;
 			}
 			if(cpt_pas % 8 == 0) {
-				cycle_volcan++;
+				if(!terrain.getPluie()) {
+					cycle_volcan++;
+				}else {
+					terrain.evaporeLave(terrain.getPluie());
+				}
 				monde.pomme_pop(step);
 				Pomme.duree();
 				Pomme.delete();
@@ -687,15 +709,26 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			//	terrain.Stockage_passage();
 				Monde.grandir();
 			//	M.reproduction();
+				terrain.MonteEau(terrain.getPluie());
 				if(cycle_volcan % 100 == 0) {
 					terrain.partir_lave();
 				}
-				terrain.propagation_lave();
-				terrain.eruption();
+				if(cycle_pluie % 130 == 0 && Math.random() <= 0.8) {
+					terrain.setPluie(true);;
+				}
+				if(cycle_pluie % 180 == 0) {
+					terrain.setPluie(false);
+					cycle_pluie = 1;
+				}
+				if(!terrain.getPluie()) {
+					terrain.propagation_lave();
+					terrain.eruption();
+				}
 				monde.arbreMourir();
 				monde.depart_feu();
 				monde.propagation_F();
 				monde.enfeu();
+				cycle_pluie++;
 			}
 			marcher += (int)(spriteLength/8);
 			try{

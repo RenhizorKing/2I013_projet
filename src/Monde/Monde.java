@@ -141,7 +141,8 @@ public class Monde {
 		for (int i=0;i<carte_Ag.size();i++) {
 			if(i<carte_Ag.size()) {
 				if (carte_Ag.get(i) instanceof M1) {
-					if(Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] < 205) {
+					if(Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] < Terrain.getEau()
+							|| Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] == Terrain.SolLave() ) {
 						carte_Ag.remove(i);
 					}
 				}
@@ -156,11 +157,11 @@ public class Monde {
 					else {
 					}
 					((M) carte_Ag.get(i)).setSens();
-					continue;
-				}
-				if (carte_Ag.get(i) instanceof Braconnier) {
-					((Braconnier) carte_Ag.get(i)).setSens();
-					((Braconnier) carte_Ag.get(i)).move(dx, dy);
+				}else {
+					if (carte_Ag.get(i) instanceof Braconnier) {
+						((Braconnier) carte_Ag.get(i)).move(dx, dy);
+						((Braconnier) carte_Ag.get(i)).setSens();
+					}
 				}
 			}
 		}
@@ -181,13 +182,29 @@ public class Monde {
 		for (int i=0;i<carte_Ab.size();i++) {
 				for (int j=0;j<carte_Ag.size();j++) {
 					cpt=0;
-					if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()-1 && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY() && ((Arbre) carte_Ab.get(i)).getGrille()==false)
+					if ((Terrain.getTerrain()[(carte_Ab.get(i)).getX()][(carte_Ab.get(i)).getY()][1])==Terrain.SolLave() 
+							|| (carte_Ag.get(j) instanceof M1 
+									&& ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()-1 
+									&& ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY() 
+									&& ((Arbre) carte_Ab.get(i)).getGrille()==false))
 						cpt+=1;
-					if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()+1 && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY() && ((Arbre) carte_Ab.get(i)).getGrille()==false)
+					if ((Terrain.getTerrain()[(carte_Ab.get(i)).getX()][(carte_Ab.get(i)).getY()][1])==Terrain.SolLave() 
+							|| (carte_Ag.get(j) instanceof M1 
+									&& ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()+1 
+									&& ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY() 
+									&& ((Arbre) carte_Ab.get(i)).getGrille()==false))
 						cpt+=1;
-					if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()+1 && ((Arbre) carte_Ab.get(i)).getGrille()==false)
+					if ((Terrain.getTerrain()[(carte_Ab.get(i)).getX()][(carte_Ab.get(i)).getY()][1])==Terrain.SolLave() 
+							|| (carte_Ag.get(j) instanceof M1 
+									&& ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() 
+									&& ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()+1 
+									&& ((Arbre) carte_Ab.get(i)).getGrille()==false))
 						cpt+=1;
-					if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()-1 && ((Arbre) carte_Ab.get(i)).getGrille()==false)
+					if ((Terrain.getTerrain()[(carte_Ab.get(i)).getX()][(carte_Ab.get(i)).getY()][1])==Terrain.SolLave() 
+							|| (carte_Ag.get(j) instanceof M1 
+									&& ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() 
+									&& ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()-1 
+									&& ((Arbre) carte_Ab.get(i)).getGrille()==false))
 						cpt+=1;
 					if (cpt ==1)// && Math.random()<0.05)
 						((Arbre) carte_Ab.get(i)).setEnfeu(true);

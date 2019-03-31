@@ -19,6 +19,7 @@ public class Terrain {
 	private int dx;
 	private int dy;
 	private  BufferedImage image;
+	private static boolean pluie=false;
 	
 	public Terrain(int dx,int dy) {
 		try {
@@ -77,9 +78,9 @@ public class Terrain {
 		for(int i = 0; i < dx ; i++) {
 			for(int j = 0; j < dy; j++) {
 				if (((this.getTerrain()[i][j][0] <= this.getTerrain()[(i-1+dx)%dx][j][0] && (this.getTerrain()[(i-1+dx)%dx][j][1] == this.SolLave())) 
-						|| (this.getTerrain()[i][j][0] <= this.getTerrain()[(i+1+dx)%dx][j][0] && (this.getTerrain()[(i+1+dx)%dx][j][1] == this.SolLave())
-						|| (this.getTerrain()[i][j][0] <= this.getTerrain()[i][(j+1+dy)%dy][0] && (this.getTerrain()[i][(j+1+dy)%dy][1] == this.SolLave()))
-						|| (this.getTerrain()[i][j][0] <= this.getTerrain()[i][(j-1+dy)%dy][0] && (this.getTerrain()[i][(j-1+dy)%dy][1] == this.SolLave()))))) { //si l'altitude est moins élevé
+				|| (this.getTerrain()[i][j][0] <= this.getTerrain()[(i+1+dx)%dx][j][0] && (this.getTerrain()[(i+1+dx)%dx][j][1] == this.SolLave())
+				|| (this.getTerrain()[i][j][0] <= this.getTerrain()[i][(j+1+dy)%dy][0] && (this.getTerrain()[i][(j+1+dy)%dy][1] == this.SolLave()))
+				|| (this.getTerrain()[i][j][0] <= this.getTerrain()[i][(j-1+dy)%dy][0] && (this.getTerrain()[i][(j-1+dy)%dy][1] == this.SolLave()))))) { //si l'altitude est moins élevé
 					
 					if(Math.random() <= 0.1) {
 						this.getTerrain()[i][j][1] = this.SolLave(); //coulé de lave
@@ -101,6 +102,44 @@ public class Terrain {
 				}
 			}
 		}
+	}
+	public void MonteEau(boolean pluie) {  //L'eau monte lorsqu'il pleut
+		if(pluie) {
+			for(int i = 0; i < dx ; i++) {
+				for(int j = 0; j < dy; j++) {
+					if((this.getTerrain()[i][j][1] < this.contourRoche()) && ((this.getTerrain()[(i+1+dx)%dx][j][1]<this.getEau()) 
+							|| this.getTerrain()[(i-1+dx)%dx][j][1]<this.getEau() 
+							|| this.getTerrain()[i][(j+1+dy)%dy][1]<this.getEau() 
+							|| this.getTerrain()[i][(j-1+dy)%dy][1]<this.getEau()) && (this.getTerrain()[i][j][1]>=this.getEau())) {
+						if(Math.random() < 0.02) {
+							this.getTerrain()[i][j][1]=this.getTerrain()[i][j][1]-5;
+						}
+					}
+				}
+			}
+		}
+	}
+	public void evaporeLave(boolean pluie) { //La lave s'evapore lorsqu'il pleut
+		if(pluie) {
+			for(int i = 0; i < dx ; i++) {
+				for(int j = 0; j < dy; j++) {
+					if((this.getTerrain()[i][j][1] == this.SolLave()) && ((this.getTerrain()[(i+1+dx)%dx][j][1]!=this.SolLave()) 
+							|| this.getTerrain()[(i-1+dx)%dx][j][1]!=this.SolLave() 
+							|| this.getTerrain()[i][(j+1+dy)%dy][1]!=this.SolLave() 
+							|| this.getTerrain()[i][(j-1+dy)%dy][1]!=this.SolLave())) {
+						if(Math.random() < 0.05) {
+							this.getTerrain()[i][j][1]=this.getTerrain()[i][j][0]; 
+						}
+					}
+				}
+			}
+		}
+	}
+	public static boolean getPluie() {
+		return pluie;
+	}
+	public void setPluie(boolean pluie) {
+		this.pluie=pluie;
 	}
 	public static int getTerre() {
 		return 207;
