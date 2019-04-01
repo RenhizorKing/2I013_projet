@@ -43,14 +43,14 @@ public class Braconnier {
 	}
 	
 	public void setSens() {
-		double d=0;
-		int direction=0;
+		double d=Integer.MAX_VALUE;
 		for (int i=0;i<Monde.getcarte_Ag().size();i++) {
 			if (Monde.getcarte_Ag().get(i) instanceof M1 || Monde.getcarte_Ag().get(i) instanceof M2) {
 				int delta_x=this.x-((M) Monde.getcarte_Ag().get(i)).getX();
 				int delta_y=this.y-((M) Monde.getcarte_Ag().get(i)).getY();
 				double delta=Math.sqrt(delta_x*delta_x+delta_y*delta_y);
-				if (i==1) {
+				
+				if (delta<d) {
 					if (delta_x<0 && delta_y>0) {
 						if (Math.abs(delta_x)>=Math.abs(delta_y)) {
 							this.sens=1;
@@ -79,7 +79,9 @@ public class Braconnier {
 							this.sens=3;
 						}
 					}
-				}			
+					d=delta;
+				}
+				
 			}
 		}
 	}
