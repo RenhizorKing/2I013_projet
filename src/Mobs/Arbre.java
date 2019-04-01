@@ -4,6 +4,7 @@ public class Arbre{
 	private boolean enfeu;
 	private boolean brulé;
 	private boolean grille;
+	private boolean pousse;
 	private int x;
 	private int y;
 	private String S;
@@ -58,4 +59,13 @@ public class Arbre{
 	public void IncrementResidu() {
 		this.residu++;
 	}
+
+	public boolean isPousse() {
+		return pousse;
+	}
+
+	public void setPousse(boolean pousse) {
+		this.pousse = pousse;
+	}
+	
 }

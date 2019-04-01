@@ -279,7 +279,19 @@ public class Monde {
 			}
 		}
 	}
-	
+	public void pop_Arbre() {
+		for (int i=0;i<dx;i++) {
+			for(int j=0;j<dy;j++) {
+					if(Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][1] < 239) {
+						if (Math.random()<0.002) {
+							Terrain.getTerrain()[i][j][2]=1;
+							Arbre arbres = new Arbre(i, j);
+							carte_Ab.add(arbres);
+					}
+				}
+			}
+		}
+	}
 	public static int getDirection() {
 		return direction;
 	}
