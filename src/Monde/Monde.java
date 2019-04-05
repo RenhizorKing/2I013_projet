@@ -279,7 +279,7 @@ public class Monde {
 			}
 		}
 	}
-	public void pop_Arbre() {
+	public void pop_Arbre2() {
 		for (int i=0;i<dx;i++) {
 			for(int j=0;j<dy;j++) {
 					if(Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][1] < 239) {

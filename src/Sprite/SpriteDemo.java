@@ -700,7 +700,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				}else {
 					terrain.evaporeLave(terrain.getPluie());
 				}
-				monde.pop_Arbre();
+				monde.pop_Arbre2();
 				monde.pomme_pop(step);
 				Pomme.duree();
 				Pomme.delete();
